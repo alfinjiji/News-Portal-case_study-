@@ -1,0 +1,169 @@
+{% extends 'layout.html' %}
+{% block body %}
+	
+	<!-- START OF MAIN SLIDER -->
+	<section class="bg-primary p-0 pb-xs-20">
+		<div class="container">
+			<div class="row  ptb-10">
+				<div class="col-md-8 col-lg-9">
+					<a class="btn-fill-red plr-10 mtb-10 btn-b-md" href="#"><b>BREAKING NEWS</b></a>
+					<a class="dplay-inl-block color-grey mtb-10 ml-15 ml-md-0 hover-grey" href="#">8:30 AM Eight People 
+						have died and violent protest involving tens of thousands...</a>
+				</div><!-- col-md-8 -->
+				<div class="col-md-4 col-lg-3">
+					<form class="abs-form mtb-10">
+						<input type="text" placeholder="Search">
+						<button type="submit"><i class="ion-ios-search"></i></button>
+					</form>
+				</div><!-- col-md-4 -->
+			</div><!-- row -->
+		</div><!-- container -->
+	</section>
+	<!-- END OF MAIN SLIDER -->
+	
+
+	<section class="pt-30 pb-0">
+		<div class="container">
+			<div class="row">
+			
+				<div class="col-md-12 col-lg-12">
+					
+					<div class="ptb-0">
+						<a class="mt-10" href="#"><i class="mr-5 ion-ios-home"></i><b>HOME</b></a>
+						<a class="mt-10 color-ash" href="#"><i class="mlr-10 ion-chevron-right"></i><b>REGISTER</b></a>
+					</div>
+					
+				</div><!-- col-sm-12 -->
+				
+			</div><!-- row -->
+		</div><!-- container -->
+	</section>
+	
+
+	<section class="pt-4 pb-20">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-lg-8">
+					<div class="p-30 mb-30 card-view">
+						<h4 class="p-title"><b>GET STARTED</b></h4>
+						<form action="" method="POST">
+							{{ form.hidden_tag() }}  <!--csrf token-->
+							<div class="row">
+								<div class="col-sm-6">
+                        			<!-- validation errors will displayed-->
+                        			{% if form.fname.errors %}
+                           			 {{ form.fname(class="is-invalid", placeholder="First Name") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.fname.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.fname(class="mb-30", placeholder="First Name") }}
+                        			{% endif %}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-6">
+									{% if form.lname.errors %}
+                           			 {{ form.lname(class="is-invalid", placeholder="Last Name") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.lname.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.fname(class="mb-30", placeholder="First Name") }}
+                        			{% endif %}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-12">
+									{% if form.mobile.errors %}
+                           			 {{ form.lname(class="is-invalid", placeholder="Mobile") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.mobile.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.mobile(class="mb-30", placeholder="Mobile") }}
+                        			{% endif %}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-12">
+									{% if form.email.errors %}
+                         				{{ form.email(class="is-invalid", placeholder="Email") }}
+                         				<div class="invalid-feedback mb-30">
+                             			{% for error in form.email.errors %}
+                                 			<span>{{ error }}</span>
+                             			{% endfor%}
+                         				</div>
+                     				{% else %}
+                         				{{ form.email(class="mb-30", placeholder="Email")}}
+                     				{% endif%}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-12">
+									{% if form.password.errors %}
+										{{ form.password(class="is-invalid", placeholder="Password") }}
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.password.errors %}
+                                    		<span>{{ error }}</span>
+                                		{% endfor%}
+                            			</div>
+                        			{% else %}
+                            			{{ form.password(class="mb-30", placeholder="Password")}}
+                        			{% endif%}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-12">
+									{% if form.confirm_password.errors %}
+                            			{{ form.confirm_password(class="is-invalid", placeholder="Confirm Password") }}
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.confirm_password.errors %}
+                                    		<span>{{ error }}</span>
+                               			{% endfor%}
+                            			</div>
+                        			{% else %}
+                            			{{ form.confirm_password(class="mb-30", placeholder="Confirm Password")}}
+                        			{% endif%}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-12">
+									{% if form.address.errors %}
+                           			 {{ form.address(class="is-invalid", placeholder="Address") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.address.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.address(class="mb-30", placeholder="Address") }}
+                        			{% endif %}
+								</div><!-- col-sm-12 -->
+								
+							</div><!-- row -->
+							<div class="form-group">
+								{{ form.submit(class="btn btn-primary btn-sm") }}
+							</div>
+						</form>
+						<div class="col-lg-12 text-center">
+							<div class="border-top pt-4"> 
+								<small class="text-muted">             
+									<p>Already Have an Account? <a href="{{ url_for('login') }}" class="ml-2 text-primary">Sign In</a></p>
+								</small>
+							</div>
+						</div>
+					</div><!-- card-view -->
+				</div><!-- col-sm-12 -->
+				<div class="col-md-12 col-lg-4">
+					
+					<div class="p-30 mb-30 card-view">
+						<h4 class="p-title"><b>OUR OFFICE</b></h4>
+						<ul class="list-contact list-li-mb-20">
+							<li><i class="ion-ios-home"></i>SE 3019, Johanesberg, Stocklholm,SE</li>
+							<li><a href="#"><i class="ion-ios-telephone"></i>(+88)223-34324-5252</a></li>
+							<li><a href="#"><i class="ion-email"></i>Support@ednews.com</a></li>
+							<li class="mb-0"><a href="#"><i class="ion-ios-world"></i>www.ednews.com</a></li>
+						</ul>
+					</div><!-- card-view -->
+				</div><!-- col-sm-12 -->
+				
+			</div><!-- row -->
+		</div><!-- container -->
+	</section>
+	
+{% endblock %}
