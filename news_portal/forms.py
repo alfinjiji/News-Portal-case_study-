@@ -7,7 +7,7 @@ from news_portal.models import User
 # Registration form validation
 class RegistrationForm(FlaskForm):
     fname = StringField('fname', validators=[DataRequired(), Length(min=3, max=10)])
-    lname = StringField('lname', validators=[DataRequired()])
+    lname = StringField('lname', validators=[DataRequired(), Length(min=1)])
     mobile = IntegerField('mobile', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired(), Email()])
     address = StringField('address', widget=TextArea(), validators=[DataRequired()]) # for textarea

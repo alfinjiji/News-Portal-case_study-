@@ -142,8 +142,11 @@
 						</ul>
 					</li>
 					{% if current_user.is_authenticated %}
-					<li>
-						<a href="{{url_for('logout')}}">LOGOUT</a>
+					<li class="drop-down"><a href="#!" class="text-uppercase">{{current_user.name}}<i class="ion-chevron-down"></i></a>
+						<ul class="drop-down-menu drop-down-inner">
+							<li><a href="#" class="text-center">Your Account</a></li>
+							<li><a href="{{url_for('logout')}}" class="text-center">Logout</a></li>
+						</ul>
 					</li>
 					{% else %}
 					<li>

@@ -18,4 +18,4 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100), nullable=False)                   
 
     def  __repr__(self):
-        return f"User('{self.name}', '{self.mobile}' '{self.email}', '{self.address}')"
+        return f"User %r('{self.name}', '{self.mobile}' '{self.email}', '{self.address}')" % self.id
