@@ -1,0 +1,159 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+</section>
+<!-- END OF MAIN SLIDER -->
+	<section class="pt-30 pb-0">
+		<div class="container">
+			<div class="row">
+			
+				<div class="col-md-12 col-lg-12">
+					
+					<div class="ptb-0">
+						<a class="mt-10" href="#"><i class="mr-5 ion-ios-home"></i><b>HOME</b></a>
+						<a class="mt-10 color-ash" href="#"><i class="mlr-10 ion-chevron-right"></i><b>YOUR ACCOUNT</b></a>
+					</div>
+					
+				</div><!-- col-sm-12 -->
+				
+			</div><!-- row -->
+		</div><!-- container -->
+	</section>
+    <section>
+        <div class="container">
+            <div class="row">
+				<!--user profile-->
+                <div class="col-md-12 col-lg-4 d-flex align-items-stretch">
+					<div class="p-30 mb-30 card-view w-100">
+						<h4 class="p-title"><b>USER PROFILE</b></h4>
+						<div class="text-center">
+							{% with messages = get_flashed_messages(with_categories=true) %}
+								{% if messages %}
+									{% for category, message in messages %}
+										<div class="alert alert-{{ category }}">
+											{{ message }}
+										</div>
+									{% endfor %}
+								{% endif %}
+							{% endwith %}
+		
+							{% if form.image.errors %}
+								<div class="alert alert-danger">
+								{% for error in form.image.errors%}
+									<p class="text-danger text-center py-0">Update Unsucessful!</p>
+									<span class="text-danger">{{error}}</span><br>
+								{% endfor %}
+								</div>
+							{% endif %}
+						</div>
+						<div class="d-flex justify-content-center py-3">
+							<img src="{{ image }}" alt="Profile image" class="rounded-circle" style="height: 150px; width: 170px;">
+						</div>
+						<h4 class="text-center text-uppercase">{{current_user.name}}</h4>
+						<div class="text-center">
+							<h6>{{current_user.email}}</h6>
+							<h6>{{current_user.mobile}}</h6>
+							<h6>{{current_user.address}}</h6>
+						</div>
+
+						<!-- Button trigger modal -->
+						<p class="text-center py-2"><a href="" class="text-dark" data-toggle="modal" data-target="#staticBackdrop">
+							Edit Profile
+						</a></p>
+  
+  						<!-- Modal -->
+ 						<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+	  						<div class="modal-content">
+								<div class="modal-header">
+									  <h4 class="modal-title text-uppercase font-weight-bold" id="staticBackdropLabel">Profile Update</h4> 
+									  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+		  							</button>
+								</div>
+								<div class="modal-body">
+									<form action="" method="POST" enctype="multipart/form-data" class="py-4">
+									{{ form.hidden_tag() }}  <!--csrf token-->
+										<div class="row">
+											<div class="col-sm-12">
+											<!-- validation errors will displayed-->
+											{% if form.name.errors %}
+												{{ form.name(class="is-invalid", placeholder="Full Name") }} 
+												<div class="invalid-feedback mb-30">
+													{% for error in form.name.errors %}
+														<span>{{ error }}</span> <!--show the success,danger .. errors -->
+													{% endfor %}
+												</div>
+											{% else %}
+												{{ form.name(class="mb-30", placeholder="Full Name") }}
+											{% endif %}
+											</div><!-- col-sm-6 -->
+											<div class="col-sm-12">
+											{% if form.email.errors %}
+								 				{{ form.email(class="is-invalid", placeholder="Email") }}
+												<div class="invalid-feedback mb-30">
+								 				{% for error in form.email.errors %}
+									 				<span>{{ error }}</span>
+								 				{% endfor%}
+								 				</div>
+							 				{% else %}
+								 				{{ form.email(class="mb-30", placeholder="Email")}}
+							 				{% endif%}
+											</div><!-- col-sm-6 -->
+											<div class="col-sm-12">
+											{% if form.mobile.errors %}
+												{{ form.lname(class="is-invalid", placeholder="Mobile") }} 
+												<div class="invalid-feedback mb-30">
+												{% for error in form.mobile.errors %}
+													<span>{{ error }}</span> <!--show the success,danger .. errors -->
+												{% endfor %}
+												</div>
+											{% else %}
+												{{ form.mobile(class="mb-30", placeholder="Mobile") }}
+											{% endif %}
+											</div><!-- col-sm-6 -->
+											<div class="col-sm-12">
+											{% if form.address.errors %}
+												{{ form.address(class="is-invalid", placeholder="Address") }} 
+												<div class="invalid-feedback mb-30">
+												{% for error in form.address.errors %}
+													<span>{{ error }}</span> <!--show the success,danger .. errors -->
+												{% endfor %}
+												</div>
+											{% else %}
+												{{ form.address(class="mb-30", placeholder="Address") }}
+											{% endif %}
+											</div><!-- col-sm-12 -->
+											<div class="col-sm-12 form-group">
+											{{ form.image.label() }}
+											{{ form.image(class="form-control-file") }}
+											{% if form.image.errors %}
+												{% for error in form.image.errors%}
+													<span class="text-danger">{{error}}</span><br>
+												{% endfor %}
+											{% endif %}
+											</div><!-- col-sm-12 -->
+										</div><!-- row -->
+										<div class="form-group">
+											{{ form.submit(class="btn btn-primary btn-sm") }}
+										</div>
+									</form>
+								</div>
+	  						</div>
+						</div>
+  					</div>
+				</div>
+				</div>
+				<!--edit profile-->
+				<div class="col-md-12 col-lg-8 d-flex align-items-stretch">
+					<div class="p-30 mb-30 card-view w-100">
+						<h4 class="p-title"><b>YOUR NEWS</b></h4>
+						<p class="text-center">No News added!</p>
+					</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    {% endblock %}

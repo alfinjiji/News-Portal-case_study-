@@ -1,0 +1,156 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+</section>
+<!-- END OF MAIN SLIDER -->
+	<section class="pt-30 pb-0">
+		<div class="container">
+			<div class="row">
+			
+				<div class="col-md-12 col-lg-12">
+					
+					<div class="ptb-0">
+						<a class="mt-10" href="#"><i class="mr-5 ion-ios-home"></i><b>HOME</b></a>
+						<a class="mt-10 color-ash" href="#"><i class="mlr-10 ion-chevron-right"></i><b>ADD NEWS</b></a>
+					</div>
+					
+				</div><!-- col-sm-12 -->
+				
+			</div><!-- row -->
+		</div><!-- container -->
+	</section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-7 d-flex align-items-stretch">
+					<div class="p-30 mb-30 card-view">
+						<h4 class="p-title"><b>ADD NEWS NOW</b></h4>
+						{% with messages = get_flashed_messages(with_categories=true) %}
+							{% if messages %}
+								{% for category, message in messages %}
+									<div class="alert alert-{{ category }}">
+										{{ message }}
+									</div>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+						<form action="" method="POST" enctype="multipart/form-data">
+                            {{ form.hidden_tag() }}  <!--csrf token-->
+                            <div class="row">
+								<div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form.heading.label(class="font-weight-bold") }}
+                        			{% if form.heading.errors %}
+                           			 {{ form.heading(class="is-invalid", placeholder="News Heading") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.heading.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.heading(class="mb-30", placeholder="News Heading") }}
+                        			{% endif %}
+                                </div><!-- col-sm-12 -->
+                                <div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form.description.label(class="font-weight-bold") }}
+                        			{% if form.description.errors %}
+                           			 {{ form.description(class="is-invalid", placeholder="News Description") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.description.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.description(class="mb-30", placeholder="News Description") }}
+                        			{% endif %}
+                                </div><!-- col-sm-12 -->
+                                <div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form.district.label(class="font-weight-bold") }}
+                                    {% if form.district.errors %}
+                           			 {{ form.district(class="form-control") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.district.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.district(class="form-control mb-30") }}
+                        			{% endif %}
+                                </div><!-- col-sm-12 -->
+                                <div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form.place.label(class="font-weight-bold") }}
+                        			{% if form.place.errors %}
+                           			 {{ form.place(class="is-invalid", placeholder="Place") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.place.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+                        			{% else %}
+                            			{{ form.place(class="mb-30", placeholder="Place") }}
+                        			{% endif %}
+                                </div><!-- col-sm-12 -->
+                                <div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form.category.label(class="font-weight-bold") }}
+                        			{% if form.category.errors %}
+                           			 {{ form.category(class="form-control is-invalid") }} 
+                            			<div class="invalid-feedback mb-30">
+                                		{% for error in form.category.errors %}
+                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                		{% endfor %}
+                            			</div>
+									{% else %}
+                            			{{ form.category(class="form-control mb-30") }}
+                        			{% endif %}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-12 form-group">
+									{{ form.news_img.label(class="font-weight-bold") }}
+									{{ form.news_img(class="form-control-file pt-1") }}
+									{% if form.news_img.errors %}
+										{% for error in form.news_img.errors %}
+											<span class="text-danger">{{error}}</span><br>
+										{% endfor %}
+									{% endif %}
+									</div><!-- col-sm-12 -->
+                            </div><!-- row -->
+							<div class="form-group">
+								{{ form.submit(class="btn btn-primary btn-sm") }}
+							</div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-5 d-flex align-items-stretch">
+                    <div class="p-30 mb-30 card-view w-100">
+                        <h4 class="p-title"><b>YOUR NEWS</b></h4>
+						{% for news in news %}
+						<div class="sided-80x mb-20">
+							<div class="s-left">
+								<img src="{{ url_for('static', filename='upload_pic/'+news.news_img)}}" alt="">
+							</div><!-- s-left -->
+							
+							<div class="s-right">
+								<h5><a href="#">
+									<b>{{news.heading}}</b></a></h5>
+									<ul class="mtb-5 list-li-mr-20 color-lite-black">
+										<li><i class="mr-5 font-12"></i>{{news.place}}</li>
+										<li><i class="mr-5 font-12"></i>{{news.category}}</li>
+									</ul>
+								<ul class="mtb-5 list-li-mr-20 color-lite-black">
+									<li><i class="mr-5 font-12 ion-clock"></i>{{ news.date.strftime("%b-%d-%Y")}}</li>
+									<li><i class="mr-5 font-12 ion-eye"></i>{{ news.district}}</li>
+								</ul>
+							</div><!-- s-left -->
+						</div><!-- sided-80x -->
+						{% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    {% endblock %}

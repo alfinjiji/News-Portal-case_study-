@@ -87,72 +87,38 @@
 					<li>
 						<a href="{{ url_for('home') }}">HOME</i></a>
 					</li>
-					<li class="drop-down"><a href="#!">BUSINESS<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
+					<li>
+						<a href="{{ url_for('home') }}">BUSINESS</i></a>
 					</li>
-					<li class="drop-down"><a href="#!">SPORT<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
+					<li>
+						<a href="{{ url_for('home') }}">SPORTS</i></a>
 					</li>
-					<li class="drop-down"><a href="#!">POLITICS<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
+					<li>
+						<a href="{{ url_for('home') }}">POLITICS</i></a>
 					</li>
-					<li class="drop-down"><a href="#!">TRAVEL<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
+					<li>
+						<a href="{{ url_for('home') }}">TECH</i></a>
 					</li>
-					<li class="drop-down"><a href="#!">LIFESTYLE<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
+					<li>
+						<a href="{{ url_for('home') }}">TRAVEL</i></a>
 					</li>
-					<li class="drop-down"><a href="#!">CULTURE<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
+					<li>
+						<a href="{{ url_for('home') }}">ENTERTAINMENT</i></a>
 					</li>
-					<li class="drop-down"><a href="#!">TECH<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
-					</li>
-					<li class="drop-down"><a href="#!">VIDEO<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
-					</li>
-					<li class="drop-down"><a href="#!">FEATURES<i class="ion-chevron-down"></i></a>
-						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#">PAGE 1</a></li>
-							<li><a href="#">PAGE 2</a></li>
-						</ul>
-					</li>
+					
 					{% if current_user.is_authenticated %}
-					<li class="drop-down"><a href="#!" class="text-uppercase">{{current_user.name}}<i class="ion-chevron-down"></i></a>
+					<li class="drop-down float-right"><a href="#!" class="text-uppercase">{{current_user.name}}<i class="ion-chevron-down"></i></a>
 						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="#" class="text-center">Your Account</a></li>
+							<li><a href="{{url_for('account')}}" class="text-center">Your Account</a></li>
+							<li><a href="{{url_for('addnews')}}" class="text-center">Add News</i></a></li>
 							<li><a href="{{url_for('logout')}}" class="text-center">Logout</a></li>
 						</ul>
 					</li>
 					{% else %}
-					<li>
+					<li class="float-right">
 						<a href="{{url_for('register')}}">REGISTER</i></a>
 					</li>
-					<li>
+					<li class="float-right">
 						<a href="{{url_for('login')}}">LOGIN</i></a>
 					</li>
 					{% endif %}
@@ -161,6 +127,24 @@
 			</div><!-- container -->
 		</div><!-- bottom-menu -->
 	</header>
+	<!-- START OF MAIN SLIDER -->
+	<section class="bg-primary p-0 pb-xs-20">
+		<div class="container">
+			<div class="row  ptb-10">
+				<div class="col-md-8 col-lg-9">
+					<a class="btn-fill-red plr-10 mtb-10 btn-b-md" href="#"><b>BREAKING NEWS</b></a>
+					<a class="dplay-inl-block color-grey mtb-10 ml-15 ml-md-0 hover-grey" href="#">8:30 AM Eight People 
+						have died and violent protest involving tens of thousands...</a>
+				</div><!-- col-md-8 -->
+				<div class="col-md-4 col-lg-3">
+					<form class="abs-form mtb-10">
+						<input type="text" placeholder="Search">
+						<button type="submit"><i class="ion-ios-search"></i></button>
+					</form>
+				</div><!-- col-md-4 -->
+			</div><!-- row -->
+		</div><!-- container -->
+	
     
     {% block body %}
 

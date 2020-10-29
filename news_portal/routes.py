@@ -1,9 +1,11 @@
 #routes.py is for creating routes
-
 from flask import render_template, url_for, flash, redirect, request
+import os
+import secrets
+from PIL import Image
 from news_portal import app, db, bcrypt
-from news_portal.forms import RegistrationForm, LoginForm  # from form.py import class RegistrationForm and LoginForm
-from news_portal.models import User # from package name.filename import classes
+from news_portal.forms import RegistrationForm, LoginForm, NewsForm, UserUpdate  # from form.py import class RegistrationForm and LoginForm
+from news_portal.models import User, News # from package name.filename import classes
 from flask_login import login_user, current_user, logout_user, login_required  # for logged an user in
 
 @app.route('/')
@@ -54,8 +56,61 @@ def logout():
      logout_user()
      return redirect(url_for('home'))
 
-# route redirect only is accound is loged in
-@app.route('/account')
+# save picture
+def save_image(form_img):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_img.filename)
+    img = random_hex + f_ext
+    img_path = os.path.join(app.root_path, 'static/upload_pic', img)
+    output_size = (150, 150) #125x125px
+    i = Image.open(form_img)
+    i.thumbnail(output_size)
+    i.save(img_path)
+    return img
+
+# Your account update route
+@app.route('/account', methods=['GET', 'POST'])
 @login_required  # if we try to access account page it will redirect to login page
 def account():
-    return render_template('account.html', title='Account')
+    form = UserUpdate()
+    if form.validate_on_submit():
+        if form.image.data:
+            try:
+                if current_user.image != "user.jpg":
+                    os.unlink(os.path.join(app.root_path, 'static/upload_pic', current_user.image))
+                img_file = save_image(form.image.data)
+                current_user.image = img_file
+            except:
+                img_file = save_image(form.image.data)
+                current_user.image = img_file
+        current_user.name = form.name.data
+        current_user.email = form.email.data
+        current_user.mobile = form.mobile.data
+        current_user.address = form.address.data
+        db.session.commit()
+        flash('Your Account has been updated!','success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.name.data = current_user.name
+        form.email.data = current_user.email
+        form.mobile.data = current_user.mobile
+        form.address.data = current_user.address
+    image = url_for('static', filename='upload_pic/'+current_user.image)
+    return render_template('account.html', title='Your_Account', form=form, image=image)
+
+# addnews route
+@app.route('/addnews', methods=['GET', 'POST'])
+@login_required
+def addnews():
+    form = NewsForm()
+    if form.validate_on_submit():
+        if form.news_img.data:
+            img_file = save_image(form.news_img.data)
+            img = img_file
+        news = News(heading=form.heading.data, description=form.description.data, district=form.district.data, place=form.place.data, category=form.category.data, news_img=img, uid=current_user.id)
+        db.session.add(news)
+        db.session.commit()
+        flash('Your News Uploaded Successfully!','success')
+        return redirect(url_for('addnews'))
+    news = News.query.filter_by(uid=current_user.id).all()
+    return render_template('addnews.html', title='Add_News', form=form, news=news)
