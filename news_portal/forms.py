@@ -62,7 +62,7 @@ class UserUpdate(FlaskForm):
             if user:
                 raise ValidationError('That Email is taken. Please Choose a different one.')
     
-# addnews form
+# add news form
 class NewsForm(FlaskForm):
     heading = StringField('News Heading', validators=[DataRequired()])
     description = StringField('News Description', widget=TextArea(), validators=[DataRequired()])
@@ -71,4 +71,16 @@ class NewsForm(FlaskForm):
     category = SelectField('News Category', choices=[("",'-- choose category --'),('Busness','Busness'),('Entertainment','Entertainment'),('International','International'),('Politics','Politics'),('Sports','Sports'),('Technology','Technology'),('Travel','Travel')], validators=[DataRequired()])
     news_img = FileField('News Image', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
     submit = SubmitField('ADD NEWS')
+
+# edit news form
+class EditNewsForm(FlaskForm):
+    heading = StringField('News Heading', validators=[DataRequired()])
+    description = StringField('News Description', widget=TextArea(), validators=[DataRequired()])
+    district = SelectField(u'District', choices=[("",'-- choose district --'),('kannur','Kannur'),('calicut','calicut')], validators=[DataRequired()])
+    place = StringField('Place', validators=[DataRequired()])
+    category = SelectField('News Category', choices=[("",'-- choose category --'),('Busness','Busness'),('Entertainment','Entertainment'),('International','International'),('Politics','Politics'),('Sports','Sports'),('Technology','Technology'),('Travel','Travel')], validators=[DataRequired()])
+    news_img = FileField('News Image', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('UPDATE NEWS')
+
+    
 

@@ -30,17 +30,20 @@
 							{% with messages = get_flashed_messages(with_categories=true) %}
 								{% if messages %}
 									{% for category, message in messages %}
-										<div class="alert alert-{{ category }}">
-											{{ message }}
-										</div>
+									<div class="alert alert-success alert-dismissible fade show" role="alert">
+										{{ message }}
+									</div>
 									{% endfor %}
 								{% endif %}
 							{% endwith %}
 		
-							{% if form.image.errors %}
+							{% if form.image.errors or form.email.errors %}
 								<div class="alert alert-danger">
-								{% for error in form.image.errors%}
 									<p class="text-danger text-center py-0">Update Unsucessful!</p>
+								{% for error in form.image.errors%}
+									<span class="text-danger">{{error}}</span><br>
+								{% endfor %}
+								{% for error in form.email.errors%}
 									<span class="text-danger">{{error}}</span><br>
 								{% endfor %}
 								</div>

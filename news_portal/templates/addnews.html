@@ -22,18 +22,32 @@
     <section>
         <div class="container">
             <div class="row">
+				<!-- Add news -->
                 <div class="col-md-12 col-lg-7 d-flex align-items-stretch">
 					<div class="p-30 mb-30 card-view">
 						<h4 class="p-title"><b>ADD NEWS NOW</b></h4>
 						{% with messages = get_flashed_messages(with_categories=true) %}
 							{% if messages %}
 								{% for category, message in messages %}
-									<div class="alert alert-{{ category }}">
-										{{ message }}
-									</div>
+									{% if category == 'addnews' %}
+										<div class="alert alert-success alert-dismissible fade show" role="alert">
+											{{ message }}
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											  <span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+									{% endif %}
 								{% endfor %}
 							{% endif %}
 						{% endwith %}
+						{% if form.news_img.errors%}
+								<div class="alert alert-danger text-center">
+									<p class="text-danger text-center py-0">Update Unsucessful!</p>
+								{% for error in form.news_img.errors%}
+									<span class="text-danger">{{error}}</span><br>
+								{% endfor %}
+								</div>
+						{% endif %}
 						<form action="" method="POST" enctype="multipart/form-data">
                             {{ form.hidden_tag() }}  <!--csrf token-->
                             <div class="row">
@@ -115,19 +129,37 @@
 											<span class="text-danger">{{error}}</span><br>
 										{% endfor %}
 									{% endif %}
-									</div><!-- col-sm-12 -->
+								</div><!-- col-sm-12 -->
                             </div><!-- row -->
 							<div class="form-group">
 								{{ form.submit(class="btn btn-primary btn-sm") }}
 							</div>
                         </form>
                     </div>
-                </div>
+				</div>
+				<!--End Add news-->
+				<!--View And Update and Delete News-->
                 <div class="col-md-12 col-lg-5 d-flex align-items-stretch">
                     <div class="p-30 mb-30 card-view w-100">
-                        <h4 class="p-title"><b>YOUR NEWS</b></h4>
+						<h4 class="p-title"><b>YOUR NEWS</b></h4>
+						{% with messages = get_flashed_messages(with_categories=true) %}
+							{% if messages %}
+								{% for category, message in messages %}
+									{% if category == 'deletenews' %}
+									<div class="alert alert-success alert-dismissible fade show" role="alert">
+										{{ message }}
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										  <span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
 						{% for news in news %}
-						<div class="sided-80x mb-20">
+						<div class="row">
+						<!--- View News-->
+						<div class="sided-80x mb-20 col-lg-9">
 							<div class="s-left">
 								<img src="{{ url_for('static', filename='upload_pic/'+news.news_img)}}" alt="">
 							</div><!-- s-left -->
@@ -136,18 +168,44 @@
 								<h5><a href="#">
 									<b>{{news.heading}}</b></a></h5>
 									<ul class="mtb-5 list-li-mr-20 color-lite-black">
-										<li><i class="mr-5 font-12"></i>{{news.place}}</li>
+										<li><i class="mr-5 font-12"></i>{{news.district}}</li>
 										<li><i class="mr-5 font-12"></i>{{news.category}}</li>
 									</ul>
 								<ul class="mtb-5 list-li-mr-20 color-lite-black">
 									<li><i class="mr-5 font-12 ion-clock"></i>{{ news.date.strftime("%b-%d-%Y")}}</li>
-									<li><i class="mr-5 font-12 ion-eye"></i>{{ news.district}}</li>
 								</ul>
 							</div><!-- s-left -->
 						</div><!-- sided-80x -->
+						<div class="col-lg-3 py-3">
+							<!-- Button trigger modal -->
+							<a class="btn btn-primary d-flex flex-column" href="{{url_for('editnews', news_id=news.id)}}" role="button">Edit</a><br>
+							<a class="btn btn-danger d-flex flex-column" href="#" role="button" data-toggle="modal" data-target="#exampleModal">Delete</a>
+						<!-- Modal -->
+  						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+	 							<div class="modal-content">
+									<div class="modal-header">
+		 								<h5 class="modal-title" id="exampleModalLabel">Delete News?</h5>
+		 							 	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+		  								</button>
+									</div>
+									<div class="modal-footer">
+		  								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		 								<form action="{{url_for('deletenews', news_id=news.id)}}" method="post">
+											<input class="btn btn-danger" type="submit" value="Delete">
+		  								</form>
+									</div>
+	  							</div>
+							</div>
+  						</div>
+						</div>
+					</div>
+					<hr>
 						{% endfor %}
                     </div>
-                </div>
+				</div>
+				<!--View And Update and delete News-->
             </div>
         </div>
     </section>

@@ -1,10 +1,10 @@
 #routes.py is for creating routes
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 import os
 import secrets
 from PIL import Image
 from news_portal import app, db, bcrypt
-from news_portal.forms import RegistrationForm, LoginForm, NewsForm, UserUpdate  # from form.py import class RegistrationForm and LoginForm
+from news_portal.forms import RegistrationForm, LoginForm, NewsForm, UserUpdate, EditNewsForm # from form.py import class RegistrationForm and LoginForm
 from news_portal.models import User, News # from package name.filename import classes
 from flask_login import login_user, current_user, logout_user, login_required  # for logged an user in
 
@@ -25,7 +25,7 @@ def register():
         user = User(name=fullname, mobile=form.mobile.data, email=form.email.data, address=form.address.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash(f'Your account has been created! You are able to login ', 'success')
+        flash('Your account has been created! You are able to login ', 'register')
         return redirect(url_for('login')) # index.html function name is home
     return render_template('register.html', title='Register', form=form)
 
@@ -103,6 +103,7 @@ def account():
 @login_required
 def addnews():
     form = NewsForm()
+    news = News.query.filter_by(uid=current_user.id).all()
     if form.validate_on_submit():
         if form.news_img.data:
             img_file = save_image(form.news_img.data)
@@ -110,7 +111,51 @@ def addnews():
         news = News(heading=form.heading.data, description=form.description.data, district=form.district.data, place=form.place.data, category=form.category.data, news_img=img, uid=current_user.id)
         db.session.add(news)
         db.session.commit()
-        flash('Your News Uploaded Successfully!','success')
+        flash('Your News Uploaded Successfully!','addnews')
         return redirect(url_for('addnews'))
-    news = News.query.filter_by(uid=current_user.id).all()
     return render_template('addnews.html', title='Add_News', form=form, news=news)
+
+# edit news route
+@app.route('/editnews/<int:news_id>', methods=['GET', 'POST'])
+@login_required
+def editnews(news_id):
+    form2 = EditNewsForm()
+    news = News.query.filter_by(uid=current_user.id).all()
+    current_news = News.query.filter_by(id=news_id).first()
+    if form2.validate_on_submit():
+        if form2.news_img.data:
+            try:
+                os.unlink(os.path.join(app.root_path, 'static/upload_pic', current_news.news_img))
+                img_file = save_image(form2.news_img.data)
+                current_news.news_img = img_file
+            except:
+                img_file = save_image(form2.news_img.data)
+                current_news.news_img = img_file
+        current_news.heading = form2.heading.data
+        current_news.description = form2.description.data
+        current_news.district = form2.district.data
+        current_news.place = form2.place.data
+        current_news.category = form2.category.data
+        db.session.commit()
+        flash('Your News has been updated!','editnews')
+        return redirect(url_for('editnews', news_id=current_news.id))
+    elif request.method == 'GET':
+        form2.heading.data = current_news.heading
+        form2.description.data = current_news.description
+        form2.district.data = current_news.district
+        form2.place.data = current_news.place
+        form2.category.data = current_news.category
+    return render_template('editnews.html', title='Edit News', form2=form2, news=news)
+
+# Delete News
+@app.route('/deletenews/<int:news_id>', methods=['POST'])
+@login_required
+def deletenews(news_id):
+    news =News.query.get_or_404(news_id)
+    if news.uid != current_user.id:
+        abort(403)
+    os.unlink(os.path.join(app.root_path, 'static/upload_pic', news.news_img))
+    db.session.delete(news)
+    db.session.commit()
+    flash('Your News has been deleted!', 'deletenews')
+    return redirect(url_for('addnews'))

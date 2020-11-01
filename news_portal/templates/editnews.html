@@ -1,0 +1,199 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+</section>
+<!-- END OF MAIN SLIDER -->
+	<section class="pt-30 pb-0">
+		<div class="container">
+			<div class="row">
+			
+				<div class="col-md-12 col-lg-12">
+					
+					<div class="ptb-0">
+						<a class="mt-10" href="#"><i class="mr-5 ion-ios-home"></i><b>HOME</b></a>
+						<a class="mt-10 color-ash" href="#"><i class="mlr-10 ion-chevron-right"></i><b>UPDATE NEWS</b></a>
+					</div>
+					
+				</div><!-- col-sm-12 -->
+				
+			</div><!-- row -->
+		</div><!-- container -->
+	</section>
+    <section>
+        <div class="container">
+            <div class="row">
+				<!--View And Update News-->
+                <div class="col-md-12 col-lg-7 d-flex align-items-stretch">
+					<div class="p-30 mb-30 card-view">
+						<h4 class="p-title"><b>UPDATE NEWS</b></h4>
+						{% with messages = get_flashed_messages(with_categories=true) %}
+							{% if messages %}
+								{% for category, message in messages %}
+								{% if category == 'editnews' %}
+								<div class="alert alert-success alert-dismissible fade show" role="alert">
+									{{ message }}
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									  <span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+						{% if form2.news_img.errors%}
+								<div class="alert alert-danger text-center">
+									<p class="text-danger text-center py-0">Update Unsucessful!</p>
+								{% for error in form2.news_img.errors%}
+									<span class="text-danger">{{error}}</span><br>
+								{% endfor %}
+								</div>
+						{% endif %}
+						<form action="" method="POST" enctype="multipart/form-data">
+							{{ form2.hidden_tag() }}  <!--csrf token-->
+							<div class="row">
+								<div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form2.heading.label(class="font-weight-bold") }}
+									{% if form2.heading.errors %}
+										{{ form2.heading(class="is-invalid", placeholder="News Heading") }} 
+										<div class="invalid-feedback mb-30">
+										{% for error in form2.heading.errors %}
+											<span>{{ error }}</span> <!--show the success,danger .. errors -->
+										{% endfor %}
+										</div>
+									{% else %}
+										{{ form2.heading(class="mb-30", placeholder="News Heading") }}
+									{% endif %}
+								</div><!-- col-sm-12 -->
+								<div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form2.description.label(class="font-weight-bold") }}
+									{% if form2.description.errors %}
+										{{ form2.description(class="is-invalid", placeholder="News Description") }} 
+										<div class="invalid-feedback mb-30">
+										{% for error in form2.description.errors %}
+											<span>{{ error }}</span> <!--show the success,danger .. errors -->
+										{% endfor %}
+										</div>
+									{% else %}
+										{{ form2.description(class="mb-30", placeholder="News Description") }}
+									{% endif %}
+								</div><!-- col-sm-12 -->
+								<div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form2.district.label(class="font-weight-bold") }}
+									{% if form2.district.errors %}
+										{{ form2.district(class="form-control") }} 
+										<div class="invalid-feedback mb-30">
+										{% for error in form2.district.errors %}
+											<span>{{ error }}</span> <!--show the success,danger .. errors -->
+										{% endfor %}
+										</div>
+									{% else %}
+										{{ form2.district(class="form-control mb-30") }}
+									{% endif %}
+								</div><!-- col-sm-12 -->
+								<div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form2.place.label(class="font-weight-bold") }}
+									{% if form2.place.errors %}
+										{{ form2.place(class="is-invalid", placeholder="Place") }} 
+										<div class="invalid-feedback mb-30">
+										{% for error in form2.place.errors %}
+											<span>{{ error }}</span> <!--show the success,danger .. errors -->
+										{% endfor %}
+										</div>
+									{% else %}
+										{{ form2.place(class="mb-30", placeholder="Place") }}
+									{% endif %}
+								</div><!-- col-sm-12 -->
+								<div class="col-sm-12">
+									<!-- validation errors will displayed-->
+									{{ form2.category.label(class="font-weight-bold") }}
+									{% if form2.category.errors %}
+										{{ form2.category(class="form-control is-invalid") }} 
+										<div class="invalid-feedback mb-30">
+										{% for error in form2.category.errors %}
+											<span>{{ error }}</span> <!--show the success,danger .. errors -->
+										{% endfor %}
+										</div>
+									{% else %}
+										{{ form2.category(class="form-control mb-30") }}
+									{% endif %}
+								</div><!-- col-sm-6 -->
+								<div class="col-sm-12 form-group">
+									{{ form2.news_img.label(class="font-weight-bold") }}
+									{{ form2.news_img(class="form-control-file pt-1") }}
+									{% if form2.news_img.errors %}
+										{% for error in form2.news_img.errors %}
+											<span class="text-danger">{{error}}</span><br>
+										{% endfor %}
+									{% endif %}
+								</div><!-- col-sm-12 -->
+							</div><!-- row -->
+							<div class="form-group">
+								{{ form2.submit(class="btn btn-primary btn-sm") }}
+							</div>
+						</form>
+                    </div>
+				</div>
+				<!-- End View And Update News-->
+                <div class="col-md-12 col-lg-5 d-flex align-items-stretch">
+                    <div class="p-30 mb-30 card-view w-100">
+                        <h4 class="p-title"><b>YOUR NEWS</b></h4>
+						{% for news in news %}
+						<div class="row">
+						<!--- View News-->
+						<div class="sided-80x mb-20 col-lg-9">
+							<div class="s-left">
+								<img src="{{ url_for('static', filename='upload_pic/'+news.news_img)}}" alt="">
+							</div><!-- s-left -->
+							
+							<div class="s-right">
+								<h5><a href="#">
+									<b>{{news.heading}}</b></a></h5>
+									<ul class="mtb-5 list-li-mr-20 color-lite-black">
+										<li><i class="mr-5 font-12"></i>{{news.district}}</li>
+										<li><i class="mr-5 font-12"></i>{{news.category}}</li>
+									</ul>
+								<ul class="mtb-5 list-li-mr-20 color-lite-black">
+									<li><i class="mr-5 font-12 ion-clock"></i>{{ news.date.strftime("%b-%d-%Y")}}</li>
+								</ul>
+							</div><!-- s-left -->
+						</div><!-- sided-80x -->
+						<!--End View News-->
+						<div class="col-lg-3 py-3">
+							<!-- Button trigger modal -->
+							<a class="btn btn-primary d-flex flex-column" href="{{url_for('editnews', news_id=news.id)}}" role="button">Edit</a><br>
+							<a class="btn btn-danger d-flex flex-column" href="#" role="button" data-toggle="modal" data-target="#exampleModal">Delete</a>
+						<!-- Modal -->
+  						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+	 							<div class="modal-content">
+									<div class="modal-header">
+		 								<h5 class="modal-title" id="exampleModalLabel">Delete News?</h5>
+		 							 	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+		  								</button>
+									</div>
+									<div class="modal-footer">
+		  								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		 								<form action="{{url_for('deletenews', news_id=news.id)}}" method="post">
+											<input class="btn btn-danger" type="submit" value="Delete">
+		  								</form>
+									</div>
+	  							</div>
+							</div>
+  						</div>
+						</div>
+					</div>
+					<hr>
+						{% endfor %}
+                    </div>
+				</div>
+            </div>
+        </div>
+    </section>
+    
+
+    {% endblock %}
