@@ -17,5 +17,9 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login' # login is our function name of route
 login_manager.login_message_category = 'info' # nicly coloured blue alert
 
-
 from news_portal import routes # import all routes that we created
+
+"""
+from news_portal.admin.routes import admin
+app.register_blueprint(admin, url_prefix="/admin")
+"""
