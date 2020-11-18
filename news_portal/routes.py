@@ -1,34 +1,15 @@
 #routes.py is for creating routes
 from flask import render_template, url_for, flash, redirect, request, abort
 import os
+import os.path as op
 import secrets
 from PIL import Image
-from news_portal import app, db, bcrypt
+from news_portal import app, db, bcrypt, file_path
 from news_portal.forms import RegistrationForm, LoginForm, NewsForm, UserUpdate, EditNewsForm # from form.py import class RegistrationForm and LoginForm
 from news_portal.models import User, News # from package name.filename import classes
 from flask_login import login_user, current_user, logout_user, login_required  # for logged an user in
 # flask-admin module import
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
-from flask_admin.contrib.fileadmin import FileAdmin
-import os.path as op
-
 from sqlalchemy.event import listens_for
-from flask_admin import Admin, form
-from flask_admin.contrib import sqla, rediscli
-#*************** flask admin start ***************#
-
-#flask-admin
-app.config['FLASK_ADMIN_SWATCH'] = 'cosmo'
-ad = Admin(app, name='Admin', template_mode='bootstrap3')
-ad.add_view(ModelView(User, db.session))
-
-# Create directory for file fields to use
-file_path = op.join(op.dirname(__file__), 'static/upload_pic')
-try:
-    os.mkdir(file_path)
-except OSError:
-    pass
 
 # Delete hooks for models, delete files if models are getting deleted
 @listens_for(News, 'after_delete')
@@ -40,45 +21,8 @@ def del_file(mapper, connection, target):
             # Don't care if was not deleted because it does not exist
             pass
 
-
-class FileView(sqla.ModelView):
-    # Override form field to use Flask-Admin FileUploadField
-    form_overrides = {
-        'news_img': form.FileUploadField
-    }
-    # Pass additional parameters to 'news_img' to FileUploadField constructor
-    form_args = {
-        'news_img': {
-            'label': 'File',
-            'base_path': file_path,
-            'allow_overwrite': False
-        }
-    }
-    # Override form field to use Flask-Admin form_choice
-    form_choices = {
-        'district': [ 
-                        ("",'-- choose district --'),
-                        ('Kasaragod','Kasaragod'), ('Kannur','Kannur'), 
-                        ('Wayanad','Wayanad'), ('Kozhikode','Kozhikode'),
-                        ('Malappuram','Malappuram'), ('Palakkad','Palakkad'),
-                        ('Thrissur','Thrissur'), ('Ernakulam','Ernakulam'), 
-                        ('Idukki','Idukki'), ('Kottayam','Kottayam'), 
-                        ('Alappuzha','Alappuzha'), ('Pathanamthitta','Pathanamthitta'), 
-                        ('Kollam','Kollam'), ('Thiruvananthapuram','Thiruvananthapuram')
-                    ],
-        'category': [ 
-                        ("",'-- choose category --'),
-                        ('Busness','Busness'), ('Entertainment','Entertainment'),
-                        ('International','International'), ('Politics','Politics'),
-                        ('Sports','Sports'), ('Technology','Technology'), ('Travel','Travel')
-                    ]
-    }
-    
-ad.add_view(FileView(News, db.session))
-path = op.join(op.dirname(__file__), 'static/upload_pic')
-ad.add_view(FileAdmin(path, '/static/upload_pic', name='Static Files'))
-
 #*************** flask admin end ***************#
+
 @app.route('/')
 def home():
     return render_template('index.html')
