@@ -45,6 +45,7 @@ class News(db.Model):
     def  __repr__(self):
         return f"News('{self.heading}', '{self.description}', '{self.district}', '{self.place}', '{self.category}', '{self.news_img}', '{self.date}')"
 
+#*************** flask admin start ***************#
 # Flask Admin
 class FileView(sqla.ModelView):
     # Override form field to use Flask-Admin FileUploadField
@@ -84,3 +85,4 @@ ad.add_view(FileView(News, db.session))
 path = op.join(op.dirname(__file__), 'static/upload_pic')
 ad.add_view(FileAdmin(path, '/static/upload_pic', name='Static Files'))
 
+#*************** flask admin end ***************#

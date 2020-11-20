@@ -142,6 +142,7 @@
                 <div class="col-md-12 col-lg-5 d-flex align-items-stretch">
                     <div class="p-30 mb-30 card-view w-100">
 						<h4 class="p-title"><b>YOUR NEWS</b></h4>
+						<p class="text-center">{{msg}}</p>
 						{% with messages = get_flashed_messages(with_categories=true) %}
 							{% if messages %}
 								{% for category, message in messages %}

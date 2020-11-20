@@ -76,7 +76,7 @@ class NewsForm(FlaskForm):
                         ('Kollam','Kollam'), ('Thiruvananthapuram','Thiruvananthapuram')], validators=[DataRequired()])
     place = StringField('Place', validators=[DataRequired()])
     category = SelectField('News Category', choices=[("",'-- choose category --'),('Busness','Busness'),
-                    ('Entertainment','Entertainment'),('International','International'),('Politics','Politics'),
+                    ('Entertainment','Entertainment'),('Politics','Politics'),
                     ('Sports','Sports'),('Technology','Technology'),('Travel','Travel')], validators=[DataRequired()])
     news_img = FileField('News Image', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
     submit = SubmitField('ADD NEWS')

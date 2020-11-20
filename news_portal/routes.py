@@ -8,6 +8,8 @@ from news_portal import app, db, bcrypt, file_path
 from news_portal.forms import RegistrationForm, LoginForm, NewsForm, UserUpdate, EditNewsForm # from form.py import class RegistrationForm and LoginForm
 from news_portal.models import User, News # from package name.filename import classes
 from flask_login import login_user, current_user, logout_user, login_required  # for logged an user in
+
+#*************** flask admin start ***************#
 # flask-admin module import
 from sqlalchemy.event import listens_for
 
@@ -111,7 +113,12 @@ def account():
         form.mobile.data = current_user.mobile
         form.address.data = current_user.address
     image = url_for('static', filename='upload_pic/'+current_user.image)
-    return render_template('account.html', title='Your_Account', form=form, image=image)
+    news = News.query.filter_by(uid=current_user.id).all()
+    if news:
+        msg=""
+    else:
+        msg="No news Added"
+    return render_template('account.html', title='Your_Account', form=form, image=image, news=news, msg=msg)
 
 # addnews route
 @app.route('/addnews', methods=['GET', 'POST'])
@@ -119,6 +126,10 @@ def account():
 def addnews():
     form = NewsForm()
     news = News.query.filter_by(uid=current_user.id).all()
+    if news:
+        msg=""
+    else:
+        msg="No news Added"
     if form.validate_on_submit():
         if form.news_img.data:
             img_file = save_image(form.news_img.data)
@@ -128,7 +139,7 @@ def addnews():
         db.session.commit()
         flash('Your News Uploaded Successfully!','addnews')
         return redirect(url_for('addnews'))
-    return render_template('addnews.html', title='Add_News', form=form, news=news)
+    return render_template('addnews.html', title='Add_News', form=form, news=news, msg=msg)
 
 # edit news route
 @app.route('/editnews/<int:news_id>', methods=['GET', 'POST'])
@@ -136,6 +147,10 @@ def addnews():
 def editnews(news_id):
     form2 = EditNewsForm()
     news = News.query.filter_by(uid=current_user.id).all()
+    if news:
+        msg=""
+    else:
+        msg="No news Added"
     current_news = News.query.filter_by(id=news_id).first()
     if form2.validate_on_submit():
         if form2.news_img.data:
@@ -160,7 +175,7 @@ def editnews(news_id):
         form2.district.data = current_news.district
         form2.place.data = current_news.place
         form2.category.data = current_news.category
-    return render_template('editnews.html', title='Edit News', form2=form2, news=news)
+    return render_template('editnews.html', title='Edit News', form2=form2, news=news, msg=msg)
 
 # Delete News
 @app.route('/deletenews/<int:news_id>', methods=['POST'])
@@ -174,3 +189,15 @@ def deletenews(news_id):
     db.session.commit()
     flash('Your News has been deleted!', 'deletenews')
     return redirect(url_for('addnews'))
+
+# News categories
+@app.route('/<string:category>', methods=['GET'])
+def categories(category):
+    news = News.query.filter_by(category=category).all()
+    return render_template('categories.html', title=category, news=news)
+
+# Single News
+@app.route('/<string:category>/<int:id>', methods=['GET'])
+def single(category,id):
+    news = News.query.filter_by(id=id).first()
+    return render_template('single_post.html', title=category, news=news)

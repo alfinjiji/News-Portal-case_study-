@@ -24,6 +24,9 @@
 	<style>
 		.invalid-feedback{color: red; padding-left: 5px;}
 		.btn-clor{background-color: #0C0E68; color: aliceblue;}
+		.module { margin: 0 0 1em 0; overflow: hidden; }
+        .module p { margin: 0;}
+        .line-clamp {display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
 	</style>
 	
 </head>
@@ -88,22 +91,22 @@
 						<a href="{{ url_for('home') }}">HOME</i></a>
 					</li>
 					<li>
-						<a href="{{ url_for('home') }}">BUSINESS</i></a>
+						<a href="{{url_for('categories', category='Busness')}}">BUSNESS</i></a>
 					</li>
 					<li>
-						<a href="{{ url_for('home') }}">SPORTS</i></a>
+						<a href="{{url_for('categories', category='Sports')}}">SPORTS</i></a>
 					</li>
 					<li>
-						<a href="{{ url_for('home') }}">POLITICS</i></a>
+						<a href="{{url_for('categories', category='Politics')}}">POLITICS</i></a>
 					</li>
 					<li>
-						<a href="{{ url_for('home') }}">TECH</i></a>
+						<a href="{{url_for('categories', category='Technology')}}">TECH</i></a>
 					</li>
 					<li>
-						<a href="{{ url_for('home') }}">TRAVEL</i></a>
+						<a href="{{url_for('categories', category='Travel')}}">TRAVEL</i></a>
 					</li>
 					<li>
-						<a href="{{ url_for('home') }}">ENTERTAINMENT</i></a>
+						<a href="{{url_for('categories', category='Entertainment')}}">ENTERTAINMENT</i></a>
 					</li>
 					
 					{% if current_user.is_authenticated %}

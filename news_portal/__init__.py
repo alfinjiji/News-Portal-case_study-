@@ -13,6 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '825515e35cea3279818d369c35b72a70'
 #configuration for sqlite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+#*************** flask admin start ***************#
 #admin
 app.config['FLASK_ADMIN_SWATCH'] = 'cosmo'
 ad = Admin(app, name='Admin', template_mode='bootstrap3')
@@ -22,6 +23,7 @@ try:
     os.mkdir(file_path)
 except OSError:
     pass
+#*************** flask admin end ***************#
 
 # database object
 db = SQLAlchemy(app)
