@@ -1,55 +1,20 @@
 import os
 import os.path as op
-# model.py is for creating Models or tables
-from datetime import datetime
-from news_portal import db, login_manager #, file_path, ad
-from flask_login import UserMixin, current_user
-# flask-admin
 from flask_admin import form
 from flask_admin.contrib import sqla, rediscli
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.contrib.fileadmin import FileAdmin
+from flask_login import UserMixin, current_user
+from news_portal import db
+from news_portal.models import User, News
+from news_portal.admins import ad, file_path, admin_login 
 
 # function for get an user by id
-@login_manager.user_loader
+@admin_login.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
-
-# User Model
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
-    mobile = db.Column(db.Integer, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    address = db.Column(db.Text, nullable=False)
-    image = db.Column(db.String(20), nullable=False, default='user.jpg')
-    password = db.Column(db.String(100), nullable=False)  
-    news = db.relationship('News', backref='user', lazy=True)                 
-
-    def  __repr__(self):
-        return f"User %r('{self.name}', '{self.mobile}' '{self.email}', '{self.address}')" % self.id
-
-# News Model
-class News(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    heading = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    district = db.Column(db.String(20), nullable=False)
-    place = db.Column(db.String(20), nullable=False)
-    category = db.Column(db.String(20), nullable=False)
-    news_img = db.Column(db.String(20), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    status = db.Column(db.Boolean)
-
-    def  __repr__(self):
-        return f"News('{self.heading}', '{self.description}', '{self.district}', '{self.place}', '{self.category}', '{self.news_img}', '{self.date}')"
-
-#*************** flask admin start ***************#
-# Flask Admin
+    return User.query.get(user_id)
 
 #Admin Model 
-"""
 class Admins(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
@@ -59,6 +24,7 @@ class Admins(db.Model, UserMixin):
 class FileView(sqla.ModelView):
     def is_accessible(self):
         return current_user.is_authenticated
+
     # Override form field to use Flask-Admin FileUploadField
     form_overrides = {
         'news_img': form.FileUploadField
@@ -90,9 +56,6 @@ class FileView(sqla.ModelView):
                         ('Sports','Sports'), ('Technology','Technology'), ('Travel','Travel')
                     ]
     }
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
 
 class MyModelView(ModelView):
     def is_accessible(self):
@@ -104,8 +67,6 @@ class MyFileAdmin(FileAdmin):
 
 ad.add_view(MyModelView(User, db.session))    
 ad.add_view(FileView(News, db.session))
-path = op.join(op.dirname(__file__), 'static/upload_pic')
-ad.add_view(MyFileAdmin(path, '/static/upload_pic', name='Static Files'))
+# path = op.join(op.dirname(__file__), 'static/upload_pic')
+# ad.add_view(MyFileAdmin(path, '/static/upload_pic', name='Static Files'))
 
-#*************** flask admin end ***************#
-"""

@@ -1,14 +1,14 @@
 #routes.py is for creating routes
-from flask import render_template, url_for, flash, redirect, request, abort
 import os
 import os.path as op
+from flask import render_template, url_for, flash, redirect, request, abort
 import secrets
 from PIL import Image
 from news_portal import app, db, bcrypt, file_path
 from news_portal.forms import RegistrationForm, LoginForm, NewsForm, UserUpdate, EditNewsForm # from form.py import class RegistrationForm and LoginForm
 from news_portal.models import User, News # from package name.filename import classes
 from flask_login import login_user, current_user, logout_user, login_required  # for logged an user in
-
+"""
 #*************** flask admin start ***************#
 # flask-admin module import
 from sqlalchemy.event import listens_for
@@ -24,7 +24,7 @@ def del_file(mapper, connection, target):
             pass
 
 #*************** flask admin end ***************#
-
+"""
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -113,8 +113,10 @@ def account():
         form.mobile.data = current_user.mobile
         form.address.data = current_user.address
     image = url_for('static', filename='upload_pic/'+current_user.image)
-    news = News.query.filter_by(uid=current_user.id).all()
-    if news:
+    n = News.query.filter_by(uid=current_user.id).all()
+    page = request.args.get('page', 1, type=int)
+    news = News.query.filter_by(uid=current_user.id).order_by(News.date.desc()).paginate(page=page, per_page=2)
+    if n:
         msg=""
     else:
         msg="No news Added"
@@ -125,8 +127,10 @@ def account():
 @login_required
 def addnews():
     form = NewsForm()
-    news = News.query.filter_by(uid=current_user.id).all()
-    if news:
+    page = request.args.get('page', 1, type=int)
+    news = News.query.filter_by(uid=current_user.id).order_by(News.date.desc()).paginate(page=page, per_page=4)
+    n = News.query.filter_by(uid=current_user.id).all()
+    if n:
         msg=""
     else:
         msg="No news Added"
@@ -146,7 +150,8 @@ def addnews():
 @login_required
 def editnews(news_id):
     form2 = EditNewsForm()
-    news = News.query.filter_by(uid=current_user.id).all()
+    page = request.args.get('page', 1, type=int)
+    news = News.query.filter_by(uid=current_user.id).order_by(News.date.desc()).paginate(page=page, per_page=4)
     if news:
         msg=""
     else:
@@ -175,7 +180,8 @@ def editnews(news_id):
         form2.district.data = current_news.district
         form2.place.data = current_news.place
         form2.category.data = current_news.category
-    return render_template('editnews.html', title='Edit News', form2=form2, news=news, msg=msg)
+        news_id = news_id
+    return render_template('editnews.html', title='Edit News', form2=form2, news=news, msg=msg, news_id=news_id)
 
 # Delete News
 @app.route('/deletenews/<int:news_id>', methods=['POST'])
@@ -193,8 +199,14 @@ def deletenews(news_id):
 # News categories
 @app.route('/<string:category>', methods=['GET'])
 def categories(category):
-    news = News.query.filter_by(category=category).all()
-    return render_template('categories.html', title=category, news=news)
+    n = News.query.filter_by(category=category).all()
+    if n:
+        msg=""
+    else:
+        msg="No news Added"
+    page = request.args.get('page', 1, type=int)
+    news = News.query.filter_by(category=category).order_by(News.date.desc()).paginate(page=page, per_page=5)
+    return render_template('categories.html', title=category, news=news, msg=msg)
 
 # Single News
 @app.route('/<string:category>/<int:id>', methods=['GET'])

@@ -142,7 +142,7 @@
                     <div class="p-30 mb-30 card-view w-100">
 						<h4 class="p-title"><b>YOUR NEWS</b></h4>
 						<p class="text-center">{{msg}}</p>
-						{% for news in news %}
+						{% for news in news.items %}
 						<div class="row">
 						<!--- View News-->
 						<div class="sided-80x mb-20 col-lg-9">
@@ -166,30 +166,28 @@
 						<div class="col-lg-3 py-3">
 							<!-- Button trigger modal -->
 							<a class="btn btn-primary d-flex flex-column" href="{{url_for('editnews', news_id=news.id)}}" role="button">Edit</a><br>
-							<a class="btn btn-danger d-flex flex-column" href="#" role="button" data-toggle="modal" data-target="#exampleModal">Delete</a>
-						<!-- Modal -->
-  						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog">
-	 							<div class="modal-content">
-									<div class="modal-header">
-		 								<h5 class="modal-title" id="exampleModalLabel">Delete News?</h5>
-		 							 	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-		  								</button>
-									</div>
-									<div class="modal-footer">
-		  								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		 								<form action="{{url_for('deletenews', news_id=news.id)}}" method="post">
-											<input class="btn btn-danger" type="submit" value="Delete">
-		  								</form>
-									</div>
-	  							</div>
-							</div>
-  						</div>
+							<form action="{{url_for('deletenews', news_id=news.id)}}" method="post">
+								<input class="btn btn-danger" type="submit" value="Delete">
+							</form>
 						</div>
 					</div>
 					<hr>
+					{% endfor %}
+					<!-- Pagination -->
+					<ul class="pagination mb-30 justify-content-center">
+						{% for page_num in news.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+							{% if page_num %}
+								{% if news.page == page_num %}
+									<li class="active"><a href="{{url_for('editnews',news_id=news_id, page=page_num)}}">{{page_num}}</a></li>
+								{% else %}
+									<li><a href="{{url_for('editnews',news_id=news_id, page=page_num)}}">{{page_num}}</a></li>
+								{% endif %}
+							{% else %}
+								...
+							{% endif %}
 						{% endfor %}
+						</ul>
+					<!--End pagination-->
                     </div>
 				</div>
             </div>

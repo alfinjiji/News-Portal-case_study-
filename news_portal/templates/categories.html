@@ -14,13 +14,13 @@
 					<div class="ptb-0">
 						<a class="mt-10" href="#"><i class="mr-5 ion-ios-home"></i><b>HOME</b></a>
 						<a class="mt-10 color-ash" href="#"><i class="mlr-10 ion-chevron-right"></i><b class="text-uppercase">{{title}}</b></a>
-						<h1 class="mtb-20 text-uppercase"><b>{{title}}</b></h1>
-						<p class="mb-30">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur placerat tincidunt mauris semper lorem, 
+						<h1 class="mtb-20 text-uppercase pb-4"><b>{{title}}</b></h1>
+				<!--	<p class="mb-30">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur placerat tincidunt mauris semper lorem, 
 							in dignissim ex metus a lacus. 
-							Sed venenatis dolor vitae vehicula varius. Aliquam vitae donis lobortis diamet</p>
+							Sed venenatis dolor vitae vehicula varius. Aliquam vitae donis lobortis diamet</p> -->	
 					</div>
-					
-					{% for news in news %}
+					<h5 class="text-center font-weight-bold">{{msg}}</h5>
+					{% for news in news.items %}
 					<div class="mb-30 sided-250x s-lg-height card-view">
 						<div class="s-left">
 							<a href="{{url_for('single', category=news.category, id=news.id)}}">
@@ -39,14 +39,29 @@
 						</div><!-- right-area -->
 					</div><!-- sided-250x -->
 					{% endfor %}
-					
+					<!-- Pagination -->
+					<ul class="pagination mb-30 justify-content-center">
+						{% for page_num in news.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+							{% if page_num %}
+								{% if news.page == page_num %}
+									<li class="active"><a href="{{url_for('categories', category=title, page=page_num)}}">{{page_num}}</a></li>
+								{% else %}
+									<li><a href="{{url_for('categories', category=title, page=page_num)}}">{{page_num}}</a></li>
+								{% endif %}
+							{% else %}
+								...
+							{% endif %}
+						{% endfor %}
+						</ul>
+					<!--End pagination-->
+				<!--
 					<ul class="pagination mb-30">
 						<li class="active"><a href="#">1</a></li>
 						<li><a href="#">2</a></li>
 						<li><a href="#">3</a></li>
 						<li><a href="#"><i class="ion-chevron-right"></i></a></li>
 					</ul>
-					
+				-->
 				</div><!-- col-sm-8 -->
 				
 				<div class="col-md-12 col-lg-4">

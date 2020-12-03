@@ -13,10 +13,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '825515e35cea3279818d369c35b72a70'
 #configuration for sqlite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+"""
 #*************** flask admin start ***************#
 #admin
 app.config['FLASK_ADMIN_SWATCH'] = 'cosmo'
-ad = Admin(app, name='Admin', template_mode='bootstrap3')
+#ad = Admin(app, name='Admin', template_mode='bootstrap3')
 # Create directory for file fields to use
 file_path = op.join(op.dirname(__file__), 'static/upload_pic')
 try:
@@ -24,6 +25,13 @@ try:
 except OSError:
     pass
 #*************** flask admin end ***************#
+"""
+# Create directory for file fields to use
+file_path = op.join(op.dirname(__file__), 'static/upload_pic')
+try:
+    os.mkdir(file_path)
+except OSError:
+    pass
 
 # database object
 db = SQLAlchemy(app)
@@ -36,7 +44,6 @@ login_manager.login_message_category = 'info' # nicly coloured blue alert
 
 from news_portal import routes # import all routes that we created
 
-"""
-from news_portal.admin.routes import admin
+
+from news_portal.admins import admin
 app.register_blueprint(admin, url_prefix="/admin")
-"""
