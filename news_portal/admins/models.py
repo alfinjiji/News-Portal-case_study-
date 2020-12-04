@@ -7,12 +7,11 @@ from flask_admin.contrib.fileadmin import FileAdmin
 from flask_login import UserMixin, current_user
 from news_portal import db
 from news_portal.models import User, News
-from news_portal.admins import ad, file_path, admin_login 
+from news_portal.admins import ad, file_path, login_manager
 
-# function for get an user by id
-@admin_login.user_loader
+@login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    return User.query.get(int(user_id))
 
 #Admin Model 
 class Admins(db.Model, UserMixin):
@@ -60,11 +59,11 @@ class FileView(sqla.ModelView):
 class MyModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated
-
+"""
 class MyFileAdmin(FileAdmin):
     def is_accessible(self):
         return current_user.is_authenticated
-
+"""
 ad.add_view(MyModelView(User, db.session))    
 ad.add_view(FileView(News, db.session))
 # path = op.join(op.dirname(__file__), 'static/upload_pic')

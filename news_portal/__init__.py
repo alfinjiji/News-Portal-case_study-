@@ -4,7 +4,7 @@ import os.path as op
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt  # for hashed password
-from flask_login import LoginManager # for login functions
+#from flask_login import LoginManager # for login functions
 #flask-Admin module
 from flask_admin import Admin
  
@@ -13,19 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '825515e35cea3279818d369c35b72a70'
 #configuration for sqlite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-"""
-#*************** flask admin start ***************#
-#admin
-app.config['FLASK_ADMIN_SWATCH'] = 'cosmo'
-#ad = Admin(app, name='Admin', template_mode='bootstrap3')
-# Create directory for file fields to use
-file_path = op.join(op.dirname(__file__), 'static/upload_pic')
-try:
-    os.mkdir(file_path)
-except OSError:
-    pass
-#*************** flask admin end ***************#
-"""
+
 # Create directory for file fields to use
 file_path = op.join(op.dirname(__file__), 'static/upload_pic')
 try:
@@ -36,14 +24,16 @@ except OSError:
 # database object
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
-# for login_required
-# if we try to access account page it will redirect to login page
-login_manager.login_view = 'login' # login is our function name of route
-login_manager.login_message_category = 'info' # nicly coloured blue alert
+#login_manager = LoginManager(app)
+#login_manager.login_view = 'users.login' 
+#login_manager.login_message_category = 'info'
 
-from news_portal import routes # import all routes that we created
-
-
+from news_portal.users.routes import users
+from news_portal.newss.routes import newss
+from news_portal.main.routes import main
 from news_portal.admins import admin
+
+app.register_blueprint(users)
+app.register_blueprint(newss)
+app.register_blueprint(main)
 app.register_blueprint(admin, url_prefix="/admin")

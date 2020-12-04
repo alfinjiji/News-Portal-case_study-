@@ -88,41 +88,41 @@
 				
 				<ul class="main-menu" id="main-menu">
 					<li>
-						<a href="{{ url_for('home') }}">HOME</i></a>
+						<a href="{{ url_for('main.home') }}">HOME</i></a>
 					</li>
 					<li>
-						<a href="{{url_for('categories', category='Busness')}}">BUSNESS</i></a>
+						<a href="{{url_for('newss.categories', category='Busness')}}">BUSNESS</i></a>
 					</li>
 					<li>
-						<a href="{{url_for('categories', category='Sports')}}">SPORTS</i></a>
+						<a href="{{url_for('newss.categories', category='Sports')}}">SPORTS</i></a>
 					</li>
 					<li>
-						<a href="{{url_for('categories', category='Politics')}}">POLITICS</i></a>
+						<a href="{{url_for('newss.categories', category='Politics')}}">POLITICS</i></a>
 					</li>
 					<li>
-						<a href="{{url_for('categories', category='Technology')}}">TECH</i></a>
+						<a href="{{url_for('newss.categories', category='Technology')}}">TECH</i></a>
 					</li>
 					<li>
-						<a href="{{url_for('categories', category='Travel')}}">TRAVEL</i></a>
+						<a href="{{url_for('newss.categories', category='Travel')}}">TRAVEL</i></a>
 					</li>
 					<li>
-						<a href="{{url_for('categories', category='Entertainment')}}">ENTERTAINMENT</i></a>
+						<a href="{{url_for('newss.categories', category='Entertainment')}}">ENTERTAINMENT</i></a>
 					</li>
 					
 					{% if current_user.is_authenticated %}
 					<li class="drop-down float-right"><a href="#!" class="text-uppercase">{{current_user.name}}<i class="ion-chevron-down"></i></a>
 						<ul class="drop-down-menu drop-down-inner">
-							<li><a href="{{url_for('account')}}" class="text-center">Your Account</a></li>
-							<li><a href="{{url_for('addnews')}}" class="text-center">Add News</i></a></li>
-							<li><a href="{{url_for('logout')}}" class="text-center">Logout</a></li>
+							<li><a href="{{url_for('users.account')}}" class="text-center">Your Account</a></li>
+							<li><a href="{{url_for('newss.addnews')}}" class="text-center">Add News</i></a></li>
+							<li><a href="{{url_for('users.logout')}}" class="text-center">Logout</a></li>
 						</ul>
 					</li>
 					{% else %}
 					<li class="float-right">
-						<a href="{{url_for('register')}}">REGISTER</i></a>
+						<a href="{{url_for('users.register')}}">REGISTER</i></a>
 					</li>
 					<li class="float-right">
-						<a href="{{url_for('login')}}">LOGIN</i></a>
+						<a href="{{url_for('users.login')}}">LOGIN</i></a>
 					</li>
 					{% endif %}
 				</ul>

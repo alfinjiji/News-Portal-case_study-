@@ -2,13 +2,9 @@ import os
 import os.path as op
 # model.py is for creating Models or tables
 from datetime import datetime
-from news_portal import db, login_manager #, file_path, ad
+from news_portal import db #, login_manager #, file_path, ad
+from news_portal.users import login_manager
 from flask_login import UserMixin, current_user
-# flask-admin
-from flask_admin import form
-from flask_admin.contrib import sqla, rediscli
-from flask_admin.contrib.sqla import ModelView
-from flask_admin.contrib.fileadmin import FileAdmin
 
 # function for get an user by id
 @login_manager.user_loader
@@ -44,68 +40,3 @@ class News(db.Model):
 
     def  __repr__(self):
         return f"News('{self.heading}', '{self.description}', '{self.district}', '{self.place}', '{self.category}', '{self.news_img}', '{self.date}')"
-
-#*************** flask admin start ***************#
-# Flask Admin
-
-#Admin Model 
-"""
-class Admins(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)  
-
-class FileView(sqla.ModelView):
-    def is_accessible(self):
-        return current_user.is_authenticated
-    # Override form field to use Flask-Admin FileUploadField
-    form_overrides = {
-        'news_img': form.FileUploadField
-    }
-    # Pass additional parameters to 'news_img' to FileUploadField constructor
-    form_args = {
-        'news_img': {
-            'label': 'File',
-            'base_path': file_path,
-            'allow_overwrite': False
-        }
-    }
-    # Override form field to use Flask-Admin form_choice
-    form_choices = {
-        'district': [ 
-                        ("",'-- choose district --'),
-                        ('Kasaragod','Kasaragod'), ('Kannur','Kannur'), 
-                        ('Wayanad','Wayanad'), ('Kozhikode','Kozhikode'),
-                        ('Malappuram','Malappuram'), ('Palakkad','Palakkad'),
-                        ('Thrissur','Thrissur'), ('Ernakulam','Ernakulam'), 
-                        ('Idukki','Idukki'), ('Kottayam','Kottayam'), 
-                        ('Alappuzha','Alappuzha'), ('Pathanamthitta','Pathanamthitta'), 
-                        ('Kollam','Kollam'), ('Thiruvananthapuram','Thiruvananthapuram')
-                    ],
-        'category': [ 
-                        ("",'-- choose category --'),
-                        ('Busness','Busness'), ('Entertainment','Entertainment'),
-                        ('International','International'), ('Politics','Politics'),
-                        ('Sports','Sports'), ('Technology','Technology'), ('Travel','Travel')
-                    ]
-    }
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
-
-class MyModelView(ModelView):
-    def is_accessible(self):
-        return current_user.is_authenticated
-
-class MyFileAdmin(FileAdmin):
-    def is_accessible(self):
-        return current_user.is_authenticated
-
-ad.add_view(MyModelView(User, db.session))    
-ad.add_view(FileView(News, db.session))
-path = op.join(op.dirname(__file__), 'static/upload_pic')
-ad.add_view(MyFileAdmin(path, '/static/upload_pic', name='Static Files'))
-
-#*************** flask admin end ***************#
-"""
