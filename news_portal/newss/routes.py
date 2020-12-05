@@ -6,6 +6,7 @@ from news_portal import app, db
 from news_portal.models import News
 from news_portal.newss.forms import NewsForm, EditNewsForm
 from news_portal.main.utils import save_image
+from news_portal.main.utils import current_datetime 
 
 newss = Blueprint('newss', __name__)
 
@@ -30,7 +31,7 @@ def addnews():
         db.session.commit()
         flash('Your News Uploaded Successfully!','addnews')
         return redirect(url_for('newss.addnews'))
-    return render_template('addnews.html', title='Add_News', form=form, news=news, msg=msg)
+    return render_template('addnews.html', title='Add_News', form=form, news=news, msg=msg, time=current_datetime(1), date=current_datetime(2))
 
 # edit news route
 @newss.route('/editnews/<int:news_id>', methods=['GET', 'POST'])
@@ -68,7 +69,7 @@ def editnews(news_id):
         form2.place.data = current_news.place
         form2.category.data = current_news.category
         news_id = news_id
-    return render_template('editnews.html', title='Edit News', form2=form2, news=news, msg=msg, news_id=news_id)
+    return render_template('editnews.html', title='Edit News', form2=form2, news=news, msg=msg, news_id=news_id, time=current_datetime(1), date=current_datetime(2))
 
 # Delete News
 @newss.route('/deletenews/<int:news_id>', methods=['POST'])
@@ -93,10 +94,10 @@ def categories(category):
         msg="No news Added"
     page = request.args.get('page', 1, type=int)
     news = News.query.filter_by(category=category).order_by(News.date.desc()).paginate(page=page, per_page=5)
-    return render_template('categories.html', title=category, news=news, msg=msg)
+    return render_template('categories.html', title=category, news=news, msg=msg, time=current_datetime(1), date=current_datetime(2))
 
 # Single News
 @newss.route('/<string:category>/<int:id>', methods=['GET'])
 def single(category,id):
     news = News.query.filter_by(id=id).first()
-    return render_template('single_post.html', title=category, news=news)
+    return render_template('single_post.html', title=category, news=news, time=current_datetime(1), date=current_datetime(2))

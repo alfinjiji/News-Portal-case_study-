@@ -17,7 +17,7 @@ class NewsForm(FlaskForm):
                         ('Alappuzha','Alappuzha'), ('Pathanamthitta','Pathanamthitta'), 
                         ('Kollam','Kollam'), ('Thiruvananthapuram','Thiruvananthapuram')], validators=[DataRequired()])
     place = StringField('Place', validators=[DataRequired()])
-    category = SelectField('News Category', choices=[("",'-- choose category --'),('Busness','Busness'),
+    category = SelectField('News Category', choices=[("",'-- choose category --'),('Business','Business'),
                     ('Entertainment','Entertainment'),('Politics','Politics'),
                     ('Sports','Sports'),('Technology','Technology'),('Travel','Travel')], validators=[DataRequired()])
     news_img = FileField('News Image', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
@@ -36,7 +36,7 @@ class EditNewsForm(FlaskForm):
                         ('Alappuzha','Alappuzha'), ('Pathanamthitta','Pathanamthitta'), 
                         ('Kollam','Kollam'), ('Thiruvananthapuram','Thiruvananthapuram')], validators=[DataRequired()])
     place = StringField('Place', validators=[DataRequired()])
-    category = SelectField('News Category', choices=[("",'-- choose category --'),('Busness','Busness'),
+    category = SelectField('News Category', choices=[("",'-- choose category --'),('Business','Business'),
                     ('Entertainment','Entertainment'),('Politics','Politics'),
                     ('Sports','Sports'),('Technology','Technology'),('Travel','Travel')], validators=[DataRequired()])
     news_img = FileField('News Image', validators=[FileAllowed(['jpg', 'png'])])

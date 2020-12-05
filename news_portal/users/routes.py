@@ -6,6 +6,7 @@ from news_portal import app, db, bcrypt
 from news_portal.models import User, News
 from news_portal.users.forms import RegistrationForm, LoginForm, UserUpdate
 from news_portal.main.utils import save_image
+from news_portal.main.utils import current_datetime 
 
 users = Blueprint('users', __name__)
 
@@ -24,7 +25,7 @@ def register():
         db.session.commit()
         flash('Your account has been created! You are able to login ', 'register')
         return redirect(url_for('users.login')) # index.html function name is home
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form, time=current_datetime(1), date=current_datetime(2))
 
 # login route
 @users.route('/login', methods=['GET', 'POST'])
@@ -45,7 +46,7 @@ def login():
             return redirect(next_page) if next_page else  redirect(url_for('main.home'))
         else:
             flash('Login Unsuccessfull. Please check username and password', 'danger') 
-    return render_template('login.html', title='Login', form=form) # passing class object to login page
+    return render_template('login.html', title='Login', form=form, time=current_datetime(1), date=current_datetime(2)) # passing class object to login page
 
 # logout route
 @users.route('/logout')
@@ -88,4 +89,4 @@ def account():
         msg=""
     else:
         msg="No news Added"
-    return render_template('account.html', title='Your_Account', form=form, image=image, news=news, msg=msg)
+    return render_template('account.html', title='Your_Account', form=form, image=image, news=news, msg=msg, time=current_datetime(1), date=current_datetime(2))

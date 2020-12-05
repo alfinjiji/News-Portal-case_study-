@@ -20,7 +20,14 @@ class User(db.Model, UserMixin):
     address = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(20), nullable=False, default='user.jpg')
     password = db.Column(db.String(100), nullable=False)  
-    news = db.relationship('News', backref='user', lazy=True)                 
+    news = db.relationship('News', backref='user', lazy=True) 
+    userole = db.Column(db.String(20), nullable=False, default='user')  
+
+    def isAdmin(self):
+        if self.userole == 'admin':
+            return True
+        else:
+            return False
 
     def  __repr__(self):
         return f"User %r('{self.name}', '{self.mobile}' '{self.email}', '{self.address}')" % self.id
