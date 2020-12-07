@@ -108,6 +108,9 @@
 					<li>
 						<a href="{{url_for('newss.categories', category='Entertainment')}}">ENTERTAINMENT</i></a>
 					</li>
+					<li>
+						<a href="{{url_for('users.feedback')}}">CONTACT AS</i></a>
+					</li>
 					
 					{% if current_user.is_authenticated %}
 					<li class="drop-down float-right"><a href="#!" class="text-uppercase">{{current_user.name}}<i class="ion-chevron-down"></i></a>

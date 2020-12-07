@@ -31,9 +31,11 @@ bcrypt = Bcrypt(app)
 from news_portal.users.routes import users
 from news_portal.newss.routes import newss
 from news_portal.main.routes import main
-from news_portal.admins import admin
+from news_portal.admins.routes import admin
 
 app.register_blueprint(users)
 app.register_blueprint(newss)
 app.register_blueprint(main)
 app.register_blueprint(admin, url_prefix="/admin")
+
+#from news_portal import admin_dashboard

@@ -3,8 +3,8 @@ import os.path as op
 from flask import Blueprint, render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, logout_user, login_required, current_user
 from news_portal import app, db, bcrypt
-from news_portal.models import User, News
-from news_portal.users.forms import RegistrationForm, LoginForm, UserUpdate
+from news_portal.models import User, News, Feedback
+from news_portal.users.forms import RegistrationForm, LoginForm, UserUpdate, FeedbackForm
 from news_portal.main.utils import save_image
 from news_portal.main.utils import current_datetime 
 
@@ -90,3 +90,14 @@ def account():
     else:
         msg="No news Added"
     return render_template('account.html', title='Your_Account', form=form, image=image, news=news, msg=msg, time=current_datetime(1), date=current_datetime(2))
+
+@users.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    form = FeedbackForm()
+    if form.validate_on_submit():
+        feedback = Feedback(name=form.name.data, email=form.email.data, message=form.message.data)
+        db.session.add(feedback)
+        db.session.commit()
+        flash('Your feedback has been Submitted!', 'feedback')
+        return redirect(url_for('users.feedback'))
+    return render_template('feedback.html', title='Feedback', form=form)

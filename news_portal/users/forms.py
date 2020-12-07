@@ -61,3 +61,10 @@ class UserUpdate(FlaskForm):
             # if user exist validation error will raise
             if user:
                 raise ValidationError('That Email is taken. Please Choose a different one.')
+
+# Feedback form
+class FeedbackForm(FlaskForm):
+    name = StringField('Your Name', validators=[DataRequired(), Length(min=5, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    message = StringField('Message', widget=TextArea(), validators=[DataRequired()])
+    submit = SubmitField('SUBMIT NOW')

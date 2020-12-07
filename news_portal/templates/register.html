@@ -31,7 +31,8 @@
 							{{ form.hidden_tag() }}  <!--csrf token-->
 							<div class="row">
 								<div class="col-sm-6">
-                        			<!-- validation errors will displayed-->
+									<!-- validation errors will displayed-->
+									<label for="first name"> First Name</label>
                         			{% if form.fname.errors %}
                            			 {{ form.fname(class="is-invalid", placeholder="First Name") }} 
                             			<div class="invalid-feedback mb-30">
@@ -44,6 +45,7 @@
                         			{% endif %}
 								</div><!-- col-sm-6 -->
 								<div class="col-sm-6">
+									<label for="last name">Last Name</label>
 									{% if form.lname.errors %}
                            			 {{ form.lname(class="is-invalid", placeholder="Last Name") }} 
                             			<div class="invalid-feedback mb-30">
@@ -56,6 +58,7 @@
                         			{% endif %}
 								</div><!-- col-sm-6 -->
 								<div class="col-sm-12">
+									<label for="mobile">Mobile</label>
 									{% if form.mobile.errors %}
                            			 {{ form.lname(class="is-invalid", placeholder="Mobile") }} 
                             			<div class="invalid-feedback mb-30">
@@ -68,6 +71,7 @@
                         			{% endif %}
 								</div><!-- col-sm-6 -->
 								<div class="col-sm-12">
+									<label for="email">Email</label>
 									{% if form.email.errors %}
                          				{{ form.email(class="is-invalid", placeholder="Email") }}
                          				<div class="invalid-feedback mb-30">
@@ -80,6 +84,7 @@
                      				{% endif%}
 								</div><!-- col-sm-6 -->
 								<div class="col-sm-12">
+									<label for="password">Password</label>
 									{% if form.password.errors %}
 										{{ form.password(class="is-invalid", placeholder="Password") }}
                             			<div class="invalid-feedback mb-30">
@@ -92,6 +97,7 @@
                         			{% endif%}
 								</div><!-- col-sm-6 -->
 								<div class="col-sm-12">
+									<label for="confirm_password">Confirm Password</label>
 									{% if form.confirm_password.errors %}
                             			{{ form.confirm_password(class="is-invalid", placeholder="Confirm Password") }}
                             			<div class="invalid-feedback mb-30">
@@ -104,6 +110,7 @@
                         			{% endif%}
 								</div><!-- col-sm-6 -->
 								<div class="col-sm-12">
+									<label for="address">Address</label>
 									{% if form.address.errors %}
                            			 {{ form.address(class="is-invalid", placeholder="Address") }} 
                             			<div class="invalid-feedback mb-30">
@@ -118,7 +125,7 @@
 								
 							</div><!-- row -->
 							<div class="form-group">
-								{{ form.submit(class="btn btn-primary btn-sm") }}
+								{{ form.submit(class="btn btn-primary", style="background-color: #0C0E68;") }}
 							</div>
 						</form>
 						<div class="col-lg-12 text-center">
@@ -135,7 +142,7 @@
 					<div class="p-30 mb-30 card-view">
 						<h4 class="p-title"><b>OUR OFFICE</b></h4>
 						<ul class="list-contact list-li-mb-20">
-							<li><i class="ion-ios-home"></i>SE Complex, Kannur, Kerala, IN</li>
+							<li><i class="ion-ios-home"></i>ED News, Kannur, Kerala, IN</li>
 							<li><a href="#"><i class="ion-ios-telephone"></i>(+91) 973-3432-525</a></li>
 							<li><a href="#"><i class="ion-email"></i>Support@ednews.com</a></li>
 							<li class="mb-0"><a href="#"><i class="ion-ios-world"></i>www.ednews.com</a></li>

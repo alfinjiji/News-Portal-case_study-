@@ -57,6 +57,7 @@
 							{{ form.hidden_tag() }}  <!--csrf token-->
 							<div class="row">
 								<div class="col-sm-12">
+									<label for="email">Email</label>
 									{% if form.email.errors %}
                          				{{ form.email(class="is-invalid", placeholder="Email") }}
                          				<div class="invalid-feedback mb-30">
@@ -69,6 +70,7 @@
                      				{% endif%}
 								</div><!-- col-sm-6 -->
 								<div class="col-sm-12">
+									<label for="passord">Password</label>
 									{% if form.password.errors %}
                             			{{ form.password(class="is-invalid", placeholder="Password") }}
                             			<div class="invalid-feedback mb-30">
@@ -82,7 +84,7 @@
 								</div><!-- col-sm-6 -->
 							</div><!-- row -->
 							<div class="form-group">
-								{{ form.submit(class="btn btn-primary btn-sm") }}
+								{{ form.submit(class="btn btn-primary", style="background-color: #0C0E68;") }}
 							</div>
 						</form>
 						
