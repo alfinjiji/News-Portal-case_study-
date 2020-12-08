@@ -43,7 +43,7 @@ class News(db.Model):
     news_img = db.Column(db.String(20), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    status = district = db.Column(db.String(20), nullable=False, default='pending')
+    status = db.Column(db.String(20), nullable=False, default='pending')
 
     def  __repr__(self):
         return f"News('{self.heading}', '{self.description}', '{self.district}', '{self.place}', '{self.category}', '{self.news_img}', '{self.date}')"

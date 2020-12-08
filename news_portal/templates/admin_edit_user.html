@@ -1,0 +1,126 @@
+{% extends 'admin_layout.html' %}
+{% block body %}
+
+    <!--Heading-->
+    <div class="breadcrumbs">
+        <div class="col-sm-4">
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <h1>Edit User</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End heading-->
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title">Edit User</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-8 pb-5">
+                                <div class="card border-info rounded">
+                                    <div class="card-body">
+                                        <form class="" action="" method="post">
+                                            {{ form.hidden_tag() }}
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <h3 class="text-center text-uppercase">Update User</h3>
+                                                </div>
+                                                <hr>
+                                                
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlTextarea1">Full Name</label>
+                                                    {% if form.name.errors %}
+                                                           {{ form.name(class="is-invalid form-control", placeholder="Full name") }} 
+                                                        <div class="text-danger">
+                                                        {% for error in form.name.errors %}
+                                                            <span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                                        {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ form.name(class="form-control", placeholder="Full name") }}
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="form-group pt-3">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <label for="exampleFormControlInput1">Mobile</label> 
+                                                            {% if form.mobile.errors %}
+                                                                   {{ form.mobile(class="is-invalid form-control", placeholder="Mobile") }} 
+                                                                <div class="text-danger">
+                                                                {% for error in form.mobile.errors %}
+                                                                    <span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                                                {% endfor %}
+                                                                </div>
+                                                            {% else %}
+                                                                {{ form.mobile(class="form-control", placeholder="Mobile") }}
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="col">
+                                                          <label for="exampleFormControlInput1">Email</label> 
+                                                            {% if form.email.errors %}
+                                                                 {{ form.email(class="is-invalid form-control", placeholder="Email") }}
+                                                                 <div class="text-danger">
+                                                                 {% for error in form.email.errors %}
+                                                                     <span>{{ error }}</span>
+                                                                 {% endfor%}
+                                                                 </div>
+                                                             {% else %}
+                                                                 {{ form.email(class="form-control", placeholder="Email")}}
+                                                             {% endif%}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlTextarea1">Address</label>
+                                                    {% if form.address.errors %}
+                                                           {{ form.address(class="is-invalid form-control", placeholder="Address") }} 
+                                                        <div class="text-danger">
+                                                        {% for error in form.address.errors %}
+                                                            <span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                                        {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ form.address(class="form-control", placeholder="Address") }}
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="my-1 mr-2">User Type</label>
+                                                    {% if form.userole.errors %}
+                                                           {{ form.userole(class="is-invalid form-control", placeholder="Mobile") }} 
+                                                        <div class="text-danger">
+                                                        {% for error in form.userole.errors %}
+                                                            <span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                                        {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ form.userole(class="form-control", placeholder="Mobile") }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form.submit(class="btn btn-lg btn-info btn-block") }}
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- .animated -->
+    </div><!-- .content -->
+
+
+{%endblock%}

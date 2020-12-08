@@ -9,7 +9,7 @@ from datetime import datetime, date
 def current_datetime(dt):
     if dt == 1:
         now = datetime.now()
-        current_time = now.strftime("%H:%M:%p")
+        current_time = now.strftime("%I:%M:%p")
         return current_time
     elif dt == 2:
         today = date.today()

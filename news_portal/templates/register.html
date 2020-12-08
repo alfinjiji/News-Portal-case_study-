@@ -60,7 +60,7 @@
 								<div class="col-sm-12">
 									<label for="mobile">Mobile</label>
 									{% if form.mobile.errors %}
-                           			 {{ form.lname(class="is-invalid", placeholder="Mobile") }} 
+                           			 {{ form.mobile(class="is-invalid", placeholder="Mobile") }} 
                             			<div class="invalid-feedback mb-30">
                                 		{% for error in form.mobile.errors %}
                                     		<span>{{ error }}</span> <!--show the success,danger .. errors -->

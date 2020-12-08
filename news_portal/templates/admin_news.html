@@ -12,6 +12,28 @@
         </div>
     </div>
     <!--End heading-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+					{% if category == 'uploadnews' %}
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+    {% endwith %}
+    {% for error in form.heading.errors or form.description.errors or form.img.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Some error occoured please check add news!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
     <div class="content mt-3">
         <div class="animated fadeIn">
             <div class="row">
@@ -19,50 +41,175 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">Data Table</strong>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" id="newsview-tab" data-toggle="tab" href="#viewnews" role="tab" aria-controls="View News" aria-selected="true"><strong class="card-title">View News</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" id="newscreate-tab" data-toggle="tab" href="#createnews" role="tab" aria-controls="Create News" aria-selected="false"><strong class="card-title">Add News</strong></a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="card-body">
-                            <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Heading</th>
-                                        <th>Description</th>
-                                        <th>District</th>
-                                        <th>Place</th>
-                                        <th>Category</th>
-                                        <th>Uploated Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                {% for news in news %}
-                                        <td>{{news.id}}</td>
-                                        <td>{{news.heading}}</td>
-                                        <td>{{news.description}}</td>
-                                        <td>{{news.district}}</td>
-                                        <td>{{news.place}}</td>
-                                        <td>{{news.category}}</td>
-                                        <td>{{news.date}}</td>
-                                        <td>
-                                            <form action="{{url_for('admins.deleteuser', user_id=user.id)}}" method="POST">
-                                                <input type="submit" class="btn btn-outline-danger" value="Delete">
-                                            </form>
-                                            <!--<button type="button" class="btn btn-outline-primary">Edit</button>-->
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                <tr> 
-                                    <td colspan="8">
-                                        {% if news %}
-                                        {% else %}
-                                           <p class="text-center">No News added</p>
-                                        {% endif %}
-                                    </td>      
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="tab-content" id="myTabContent">
+                            <!--View User-->
+                            <div class="tab-pane fade show active" id="viewnews" role="tabpanel" aria-labelledby="newsview-tab">
+                                <div class="card-body">
+                                    <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>News_Id</th>
+                                                <th>Heading</th>
+                                                <th>Description</th>
+                                                <th>District</th>
+                                                <th>Place</th>
+                                                <th>Category</th>
+                                                <th>Uploated Date</th>
+                                                <th>Image</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                        {% for news in news %}
+                                                <td>{{news.id}}</td>
+                                                <td>{{news.heading}}</td>
+                                                <td>{{news.description}}</td>
+                                                <td>{{news.district}}</td>
+                                                <td>{{news.place}}</td>
+                                                <td>{{news.category}}</td>
+                                                <td>{{news.date.strftime("%b-%d-%Y")}}</td>
+                                                <td><img src="{{ url_for('static', filename='upload_pic/'+news.news_img)}}" alt="img" style="height:50px; width:75px;"></td>
+                                                <td>
+                                                    <form action="{{url_for('admins.deletenews', news_id=news.id)}}" method="POST" class="d-flex flex-column py-2">
+                                                        <input type="submit" class="btn btn-outline-danger rounded" value="Delete">
+                                                    </form>
+                                                    <a class="btn btn-outline-primary d-flex flex-column py-2 rounded" href="{{url_for('admins.editnews', news_id=news.id)}}" role="button">Edit</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr> 
+                                            <td colspan="9">
+                                                {% if news %}
+                                                {% else %}
+                                                   <p class="text-center">No News added</p>
+                                                {% endif %}
+                                            </td>      
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--create news-->
+                            <div class="tab-pane fade" id="createnews" role="tabpanel" aria-labelledby="newscreate-tab">
+                                <div class="card-body">
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-8 pb-5">
+                                        <div class="card border-info rounded">
+                                            <div class="card-body">
+                                                <form class="" action="" method="post" enctype="multipart/form-data">
+                                                    {{ form.hidden_tag() }}
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <h3 class="text-center text-uppercase">Upload Now</h3>
+                                                        </div>
+                                                        <hr>
+                                                         
+                                                        <div class="form-group pt-2">
+                                                            <label for="exampleFormControlInput1">Heading</label>
+                        			                        {% if form.heading.errors %}
+                           			                         {{ form.heading(class="is-invalid form-control", placeholder="News Heading") }} 
+                            		                        	<div class="text-danger">
+                                	                        	{% for error in form.heading.errors %}
+                                                            		<span>{{ error }}</span>
+                                	                        	{% endfor %}
+                            		                        	</div>
+                        			                        {% else %}
+                            		                        	{{ form.heading(class="form-control", placeholder="News Heading") }}
+                        			                        {% endif %}
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="exampleFormControlTextarea1">Description</label>
+                                                            {% if form.description.errors %}
+                           			                            {{ form.description(class="is-invalid form-control", placeholder="News Description") }} 
+                            		                        	<div class="text-danger">
+                                	                        	{% for error in form.description.errors %}
+                                                            		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                	                        	{% endfor %}
+                            		                        	</div>
+                        			                        {% else %}
+                            		                        	{{ form.description(class="form-control", placeholder="News Description") }}
+                        			                        {% endif %}
+                                                        </div>
+
+                                                        <div class="form-group pt-3">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <label for="exampleFormControlInput1">District</label> 
+                                                                    {% if form.district.errors %}
+                           			                                    {{ form.district(class="is-invalid form-control") }} 
+                            		                                	<div class="text-danger">
+                                	                                	{% for error in form.district.errors %}
+                                                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                	                                	{% endfor %}
+                            		                                	</div>
+                        			                                {% else %}
+                            		                                	{{ form.district(class="form-control") }}
+                        			                                {% endif %}
+                                                                </div>
+                                                                <div class="col">
+                                                                    <label for="exampleFormControlInput1">News category</label> 
+                                                                    {% if form.category.errors %}
+                           			                                    {{ form.category(class="is-invalid form-control") }} 
+                            		                                	<div class="text-danger">
+                                	                                	{% for error in form.category.errors %}
+                                                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                	                                	{% endfor %}
+                            		                                	</div>
+									                                {% else %}
+                            		                                	{{ form.category(class="form-control") }}
+                        			                                {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group pt-3">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <label for="exampleFormControlInput1">Place</label>
+                                                                    {% if form.place.errors %}
+                           			                                    {{ form.place(class="is-invalid form-control", placeholder="Place") }} 
+                            		                                	<div class="text-danger">
+                                	                                	{% for error in form.place.errors %}
+                                                                    		<span>{{ error }}</span> <!--show the success,danger .. errors -->
+                                	                                	{% endfor %}
+                            		                                	</div>
+                        			                                {% else %}
+                            		                                	{{ form.place(class="form-control", placeholder="Place") }}
+                        			                                {% endif %} 
+                                                                </div>
+                                                                <div class="col">
+                                                                    <label for="exampleFormControlInput1">News Image</label> 
+									                                {{ form.img(class="form-control-file pt-1") }}
+									                                {% if form.img.errors %}
+									                                	{% for error in form.img.errors %}
+									                                		<span class="text-danger">{{error}}</span><br>
+									                                	{% endfor %}
+									                                {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        {{ form.submit(class="btn btn-lg btn-info btn-block") }}
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> <!-- .card -->
+                                </div>
+                            </div>
+                            <!--create news end-->
                         </div>
                     </div>
                 </div>

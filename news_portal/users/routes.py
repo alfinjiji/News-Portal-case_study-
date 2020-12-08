@@ -15,7 +15,7 @@ users = Blueprint('users', __name__)
 def register():
     # if user is logged in register link is redirected to home  
     if current_user.is_authenticated:
-        return redirect(url_for('users.home'))
+        return redirect(url_for('main.home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')

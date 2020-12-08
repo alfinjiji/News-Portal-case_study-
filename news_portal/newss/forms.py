@@ -8,7 +8,7 @@ from wtforms.widgets import TextArea
 class NewsForm(FlaskForm):
     heading = StringField('News Heading', validators=[DataRequired()])
     description = StringField('News Description', widget=TextArea(), validators=[DataRequired()])
-    district = SelectField(u'District', choices=[("",'-- choose district --'),
+    district = SelectField('District', choices=[("",'-- choose district --'),
                         ('Kasaragod','Kasaragod'), ('Kannur','Kannur'), 
                         ('Wayanad','Wayanad'), ('Kozhikode','Kozhikode'),
                         ('Malappuram','Malappuram'), ('Palakkad','Palakkad'),
@@ -27,7 +27,7 @@ class NewsForm(FlaskForm):
 class EditNewsForm(FlaskForm):
     heading = StringField('News Heading', validators=[DataRequired()])
     description = StringField('News Description', widget=TextArea(), validators=[DataRequired()])
-    district = SelectField(u'District', choices=[("",'-- choose district --'),
+    district = SelectField('District', choices=[("",'-- choose district --'),
                         ('Kasaragod','Kasaragod'), ('Kannur','Kannur'), 
                         ('Wayanad','Wayanad'), ('Kozhikode','Kozhikode'),
                         ('Malappuram','Malappuram'), ('Palakkad','Palakkad'),
