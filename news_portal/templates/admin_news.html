@@ -65,6 +65,7 @@
                                                 <th>Category</th>
                                                 <th>Uploated Date</th>
                                                 <th>Image</th>
+                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -79,6 +80,7 @@
                                                 <td>{{news.category}}</td>
                                                 <td>{{news.date.strftime("%b-%d-%Y")}}</td>
                                                 <td><img src="{{ url_for('static', filename='upload_pic/'+news.news_img)}}" alt="img" style="height:50px; width:75px;"></td>
+                                                <td>{{news.status}}</td>
                                                 <td>
                                                     <form action="{{url_for('admins.deletenews', news_id=news.id)}}" method="POST" class="d-flex flex-column py-2">
                                                         <input type="submit" class="btn btn-outline-danger rounded" value="Delete">
@@ -88,7 +90,7 @@
                                             </tr>
                                         {% endfor %}
                                         <tr> 
-                                            <td colspan="9">
+                                            <td colspan="10">
                                                 {% if news %}
                                                 {% else %}
                                                    <p class="text-center">No News added</p>

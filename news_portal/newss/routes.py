@@ -87,13 +87,13 @@ def deletenews(news_id):
 # News categories
 @newss.route('/<string:category>', methods=['GET'])
 def categories(category):
-    n = News.query.filter_by(category=category).all()
+    n = News.query.filter_by(category=category, status='approved').all()
     if n:
         msg=""
     else:
         msg="No news Added"
     page = request.args.get('page', 1, type=int)
-    news = News.query.filter_by(category=category).order_by(News.date.desc()).paginate(page=page, per_page=5)
+    news = News.query.filter_by(category=category, status='approved').order_by(News.date.desc()).paginate(page=page, per_page=5)
     return render_template('categories.html', title=category, news=news, msg=msg, time=current_datetime(1), date=current_datetime(2))
 
 # Single News

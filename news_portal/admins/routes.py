@@ -140,6 +140,7 @@ def editnews(news_id):
                 current_news.district = form.district.data
                 current_news.place = form.place.data
                 current_news.category = form.category.data
+                current_news.status = form.status.data
                 db.session.commit()
                 flash('News has been updated!','success')
                 return redirect(url_for('admins.admin_news', news_id=current_news.id))
@@ -149,6 +150,7 @@ def editnews(news_id):
                 form.district.data = current_news.district
                 form.place.data = current_news.place
                 form.category.data = current_news.category
+                form.status.data = current_news.status
             return render_template('admin_edit_news.html', title="Edit_news", form=form)
     return redirect(url_for('admins.admin_login'))
 
@@ -163,6 +165,37 @@ def deletenews(news_id):
             db.session.commit()
             flash('News has been deleted!', 'success')
             return redirect(url_for('admins.admin_news'))
+    return redirect(url_for('admins.admin_login'))
+
+#Admin News Approvel
+@admin.route('/approval')
+def newsapproval():
+    if current_user.is_authenticated:
+        if current_user.userole == 'admin':
+            pending = News.query.filter_by(status='pending').all()
+            approved = News.query.filter_by(status='approved').all()
+            rejected = News.query.filter_by(status='rejected').all()
+            return render_template('admin_news_approval.html', title="News-Approval", pending=pending, approved=approved, rejected=rejected)
+    return redirect(url_for('admins.admin_login'))
+
+# admin aprove and reject
+@admin.route('/approval/<string:status>/<int:news_id>', methods=['POST'])
+def approval(status, news_id):
+    if current_user.is_authenticated:
+        if current_user.userole == 'admin':
+            news = News.query.filter_by(id=news_id).first()
+            if status == 'approve':
+                news.status = 'approved'
+                db.session.commit()
+                flash('News has been Approved!', 'success')
+                return redirect(url_for('admins.newsapproval'))
+            elif status == 'rejected':
+                news.status = 'rejected'
+                db.session.commit()
+                flash('News has been Rejected!', 'success')
+                return redirect(url_for('admins.newsapproval'))
+            else:
+                pass
     return redirect(url_for('admins.admin_login'))
 
 # Admin Feedback

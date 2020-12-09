@@ -1,0 +1,187 @@
+{% extends 'admin_layout.html' %}
+{% block body %}
+
+    <!--Heading-->
+    <div class="breadcrumbs">
+        <div class="col-sm-4">
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <h1>News Approval</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End heading-->
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="Pending" aria-selected="true"><strong class="card-title">Pending</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" id="accept-tab" data-toggle="tab" href="#accept" role="tab" aria-controls="Accepted" aria-selected="false"><strong class="card-title">Approved</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="reject-tab" data-toggle="tab" href="#reject" role="tab" aria-controls="Rejected" aria-selected="false"><strong class="card-title">Rejected</strong></a>
+                                  </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content" id="myTabContent">
+                            <!--Penting news-->
+                            <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="card-body">
+                                    <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Heading</th>
+                                                <th>District</th>
+                                                <th>Place</th>
+                                                <th>Category</th>
+                                                <th>Description</th>
+                                                <th>Created_at</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for pending in pending %}
+                                            <tr>
+                                                <td>{{pending.id}}</td>
+                                                <td>{{pending.heading}}</td>
+                                                <td>{{pending.district}}</td>
+                                                <td>{{pending.place}}</td>
+                                                <td>{{pending.category}}</td>
+                                                <td>{{pending.description}}</td>
+                                                <td>{{pending.date}}</td>
+                                                <td>{{pending.status}}</td>
+                                                <td>
+                                                    <form action="{{url_for('admins.approval', status='approve', news_id=pending.id)}}" method="POST" class="d-flex flex-column py-2">
+                                                        <input type="submit" class="btn btn-outline-success" value="Approve">
+                                                    </form>
+                                                    <form action="{{url_for('admins.approval', status='rejected', news_id=pending.id)}}" method="POST" class="d-flex flex-column py-2">
+                                                        <input type="submit" class="btn btn-outline-danger" value="Reject">
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                       {% endfor %}
+                                        <tr> 
+                                            <td colspan="9">
+                                                {% if pending %}
+                                                {% else %}
+                                                   <p class="text-center">No Pending Request!</p>
+                                                {% endif %}
+                                            </td>      
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Accepted news-->
+                            <div class="tab-pane fade" id="accept" role="tabpanel" aria-labelledby="accept-tab">
+                                <div class="card-body">
+                                    <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Heading</th>
+                                                <th>District</th>
+                                                <th>Place</th>
+                                                <th>Category</th>
+                                                <th>Description</th>
+                                                <th>Created_at</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for approved in approved %}
+                                            <tr>
+                                                <td>{{approved.id}}</td>
+                                                <td>{{approved.heading}}</td>
+                                                <td>{{approved.district}}</td>
+                                                <td>{{approved.place}}</td>
+                                                <td>{{approved.category}}</td>
+                                                <td>{{approved.description}}</td>
+                                                <td>{{approved.date}}</td>
+                                                <td>{{approved.status}}</td>
+                                                <td>
+                                                    <form action="{{url_for('admins.approval', status='rejected', news_id=approved.id)}}" method="POST" class="d-flex flex-column py-2">
+                                                        <input type="submit" class="btn btn-outline-danger" value="Reject">
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        <tr> 
+                                            <td colspan="9">
+                                                {% if approved %}
+                                                {% else %}
+                                                   <p class="text-center">No Accepted News!</p>
+                                                {% endif %}
+                                            </td>      
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Rejected news-->
+                            <div class="tab-pane fade" id="reject" role="tabpanel" aria-labelledby="reject-tab">
+                                <div class="card-body">
+                                    <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Heading</th>
+                                                <th>District</th>
+                                                <th>Place</th>
+                                                <th>Category</th>
+                                                <th>Description</th>
+                                                <th>Created_at</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rejected in rejected %}
+                                            <tr>
+                                                <td>{{rejected.id}}</td>
+                                                <td>{{rejected.heading}}</td>
+                                                <td>{{rejected.district}}</td>
+                                                <td>{{rejected.place}}</td>
+                                                <td>{{rejected.category}}</td>
+                                                <td>{{rejected.description}}</td>
+                                                <td>{{rejected.date}}</td>
+                                                <td>{{rejected.status}}</td>
+                                                <td>
+                                                    <form action="{{url_for('admins.approval', status='approve', news_id=rejected.id)}}" method="POST" class="d-flex flex-column py-2">
+                                                        <input type="submit" class="btn btn-outline-success" value="Approve">
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor%}
+                                        <tr> 
+                                            <td colspan="9">
+                                                {% if rejected %}
+                                                {% else %}
+                                                   <p class="text-center">No Rejected News!</p>
+                                                {% endif %}
+                                            </td>      
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- .animated -->
+    </div><!-- .content -->
+
+
+{%endblock%}

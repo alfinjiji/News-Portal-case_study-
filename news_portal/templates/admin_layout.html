@@ -37,7 +37,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" href="{{url_for('admins.admin_home')}}"><h3 class="text-primary font-weight-bold">ADMIN</h3></a>
-                <a class="navbar-brand hidden" href="{{url_for('admins.admin_home')}}"><img src="images/logo2.png" alt="Logo"></a>
+                <a class="navbar-brand hidden" href="{{url_for('admins.admin_home')}}"></a>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -50,6 +50,9 @@
                     </li>
                     <li>
                         <a href="{{url_for('admins.admin_news')}}"> <i class="menu-icon fa fa-id-card-o"></i>News </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('admins.newsapproval')}}"> <i class="menu-icon fa fa-check-square"></i>News Approvel</a>
                     </li>
                     <li>
                         <a href="{{url_for('admins.admin_feedback')}}"> <i class="menu-icon ti-email"></i>Feedback </a>
