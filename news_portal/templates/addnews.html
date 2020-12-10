@@ -174,15 +174,23 @@
 									</ul>
 								<ul class="mtb-5 list-li-mr-20 color-lite-black">
 									<li><i class="mr-5 font-12 ion-clock"></i>{{ news.date.strftime("%b-%d-%Y")}}</li>
+									{% if news.status == 'pending' %}
+									<li class="text-primary"><i class="mr-5 font-12"></i><b text-dark>Status : </b>{{news.status}}</li>
+									{% endif %}
 								</ul>
 							</div><!-- s-left -->
 						</div><!-- sided-80x -->
 						<div class="col-lg-3 py-3">
-							<!-- Button trigger modal -->
+							{% if news.status == 'pending' %}
 							<a class="btn btn-primary d-flex flex-column" href="{{url_for('newss.editnews', news_id=news.id)}}" role="button">Edit</a><br>
 							<form action="{{url_for('newss.deletenews', news_id=news.id)}}" method="post">
 								<input class="btn btn-danger" type="submit" value="Delete">
 							</form>
+							{% elif news.status == 'approved' %}
+							<img src="{{url_for('static', filename='img/approved.jpg')}}" alt="approved" style="width: 80px; height: 80px;">
+							{% else %}
+							<img src="{{url_for('static', filename='img/rejected.jpg')}}" alt="approved" style="width: 80px; height: 80px;">
+							{% endif %}
 						</div>
 					</div>
 					<hr>

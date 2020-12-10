@@ -111,7 +111,7 @@ def admin_news():
                 if form.img.data:
                     img_file = save_image(form.img.data)
                     img = img_file
-                news = News(heading=form.heading.data, description=form.description.data, district=form.district.data, place=form.place.data, category=form.category.data, news_img=img, uid=current_user.id)
+                news = News(heading=form.heading.data, description=form.description.data, district=form.district.data, place=form.place.data, category=form.category.data, news_img=img, status=form.status.data, uid=current_user.id)
                 db.session.add(news)
                 db.session.commit()
                 flash('News Uploaded Successfully!', 'uploadnews')

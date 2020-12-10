@@ -67,4 +67,4 @@ class FeedbackForm(FlaskForm):
     name = StringField('Your Name', validators=[DataRequired(), Length(min=5, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     message = StringField('Message', widget=TextArea(), validators=[DataRequired()])
-    submit = SubmitField('SUBMIT NOW')
+    submit = SubmitField('SEND FEEDBACK')

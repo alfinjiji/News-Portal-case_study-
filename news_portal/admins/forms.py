@@ -56,6 +56,7 @@ class AdminNewsForm(FlaskForm):
                     ('Entertainment','Entertainment'),('Politics','Politics'),
                     ('Sports','Sports'),('Technology','Technology'),('Travel','Travel')], validators=[DataRequired()])
     img = FileField('News Image', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
+    status = SelectField('Status', choices=[("pending",'pending'), ("approved",'approved'), ("rejected",'rejected')])
     submit = SubmitField('Upload Now')
 
 # Admin Update News form
