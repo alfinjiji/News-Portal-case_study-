@@ -79,3 +79,11 @@ class AdminNewsUpdate(FlaskForm):
     status = SelectField('Status', choices=[("pending",'pending'), ("approved",'approved'), ("rejected",'rejected')])
     submit = SubmitField('Update News')
     
+"""
+# Admin Change Password
+class AdminChangePassword(FlaskForm):
+    old_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=8)])
+    new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=8)]) 
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
+    submit = SubmitField('Change Password')
+"""

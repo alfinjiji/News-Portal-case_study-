@@ -6,6 +6,7 @@ from news_portal import db, bcrypt, app
 from news_portal.models import User, News, Feedback
 from news_portal.admins.forms import AdminLoginForm, CreateUserForm, AdminUserUpdate, AdminNewsForm, AdminNewsUpdate
 from news_portal.main.utils import save_image
+from news_portal.users.forms import UserUpdate
 
 admin = Blueprint('admins', __name__)
 
@@ -39,6 +40,56 @@ def admin_home():
     if current_user.is_authenticated:
         if current_user.userole == 'admin':
             return render_template('admin_home.html', title="home")
+    return redirect(url_for('admins.admin_login'))
+
+# Admin Profile
+@admin.route('admin-profile', methods=['GET', 'POST'])
+def admin_profile():
+    if current_user.is_authenticated:
+        if current_user.userole == 'admin':
+            form = UserUpdate()
+            if form.validate_on_submit():
+                if form.image.data:
+                    try:
+                        if current_user.image != "user.jpg":
+                            os.unlink(os.path.join(app.root_path, 'static/upload_pic', current_user.image))
+                        img_file = save_image(form.image.data)
+                        current_user.image = img_file
+                    except:
+                        img_file = save_image(form.image.data)
+                        current_user.image = img_file
+                current_user.name = form.name.data
+                current_user.email = form.email.data
+                current_user.mobile = form.mobile.data
+                current_user.address = form.address.data
+                db.session.commit()
+                flash('Your Account has been updated!','success')
+                return redirect(url_for('admins.admin_profile'))
+            elif request.method == 'GET':
+                form.name.data = current_user.name
+                form.email.data = current_user.email
+                form.mobile.data = current_user.mobile
+                form.address.data = current_user.address
+            image = url_for('static', filename='upload_pic/'+current_user.image)
+            return render_template('admin_profile.html', title="Profile", form=form, image=image)
+    return redirect(url_for('admins.admin_login'))
+
+# Admin Change Password
+@admin.route('admin-change_password', methods=['POST'])
+def admin_change_password():
+    if current_user.is_authenticated:
+        if current_user.userole == 'admin':
+            if request.method == 'POST':
+                if bcrypt.check_password_hash(current_user.password, request.form['current_password']):
+                    if request.form['new_password'] == request.form['confirm_password']:
+                        new_password = bcrypt.generate_password_hash(request.form['new_password']).decode('utf-8')
+                        current_user.password = new_password
+                        db.session.commit()
+                        flash('Your Password has been changed successfully! Please Login!','success')
+                        return redirect(url_for('admins.admin_logout'))
+                else:
+                    flash('Current password mismatch, Please try again', 'danger')
+            return redirect(url_for('admins.admin_profile'))
     return redirect(url_for('admins.admin_login'))
 
 # Admin User view and Add user
@@ -218,3 +269,4 @@ def deletefeedback(feedback_id):
             flash('Feedback has been deleted!', 'success')
             return redirect(url_for('admins.admin_feedback'))
     return redirect(url_for('admins.admin_login'))
+

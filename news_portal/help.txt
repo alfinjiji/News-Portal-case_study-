@@ -1,0 +1,4 @@
+Admin
+-----------
+email       :  admin@login.com
+password    :  Admin1234

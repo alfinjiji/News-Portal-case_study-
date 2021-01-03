@@ -1,0 +1,177 @@
+{% extends 'admin_layout.html' %}
+{% block body %}
+
+    <!--Extended page started-->
+            
+        <!--Heading-->
+        <div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>My Profile</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End heading-->
+        <!--Admin profile-->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title mb-3">My Account</strong>
+                </div>
+                <div class="card-body">
+                    <div class="mx-auto d-block">
+                        <img class="rounded-circle mx-auto d-block" src="{{ image }}" alt="Admin Pic" style="width: 175px; height: 175px;">
+                        <h5 class="text-sm-center mt-2 mb-1">{{current_user.name}}</h5>
+                        <div class="location text-sm-center"><i class="fa fa-envelope"></i> {{current_user.email}}</div>
+                        <div class="location text-sm-center"><i class="fa fa-map-marker"></i> {{current_user.address}}</div>
+                        <div class="location text-sm-center"><i class="fa fa-mobile"></i> {{current_user.mobile}}</div>
+                        <!-- Button trigger modal -->
+						<p class="text-center py-2"><a href="" class="text-dark" data-toggle="modal" data-target="#staticBackdrop">
+							Edit Profile
+						</a></p>
+  
+  						<!-- Modal -->
+ 						<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+	  						<div class="modal-content">
+								<div class="modal-header">
+									  <h4 class="modal-title text-uppercase font-weight-bold" id="staticBackdropLabel">Profile Update</h4> 
+									  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+		  							</button>
+								</div>
+								<div class="modal-body">
+                                    <form action="" method="POST" enctype="multipart/form-data">
+                                        {{ form.hidden_tag() }}  <!--csrf token-->
+                                        <div class="form-group">
+                                            <label for="cc-payment" class="control-label mb-1">Full Name</label>
+                                            {% if form.name.errors %}
+												{{ form.name(class="form-control is-invalid", placeholder="Full Name") }} 
+												<div class="invalid-feedback mb-30">
+													{% for error in form.name.errors %}
+														<span>{{ error }}</span> <!--show the success,danger .. errors -->
+													{% endfor %}
+												</div>
+											{% else %}
+												{{ form.name(class="form-control", placeholder="Full Name") }}
+											{% endif %}
+                                        </div>
+                                            <div class="form-group has-success">
+                                                <label for="cc-name" class="control-label mb-1">Email</label>
+                                                {% if form.email.errors %}
+								 				{{ form.email(class="form-control is-invalid", placeholder="Email") }}
+												<div class="invalid-feedback mb-30">
+								 				{% for error in form.email.errors %}
+									 				<span>{{ error }}</span>
+								 				{% endfor%}
+								 				</div>
+							 				{% else %}
+								 				{{ form.email(class="form-control", placeholder="Email")}}
+							 				{% endif%}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-number" class="control-label mb-1">Mobile</label>
+                                                {% if form.mobile.errors %}
+												{{ form.mobile(class="form-control is-invalid", placeholder="Mobile") }} 
+												<div class="invalid-feedback mb-30">
+												{% for error in form.mobile.errors %}
+													<span>{{ error }}</span> <!--show the success,danger .. errors -->
+												{% endfor %}
+												</div>
+											{% else %}
+												{{ form.mobile(class="form-control", placeholder="Mobile") }}
+											{% endif %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-number" class="control-label mb-1">Address</label>
+                                                {% if form.address.errors %}
+												{{ form.address(class="form-control is-invalid", placeholder="Address") }} 
+												<div class="invalid-feedback mb-30">
+												{% for error in form.address.errors %}
+													<span>{{ error }}</span> <!--show the success,danger .. errors -->
+												{% endfor %}
+												</div>
+											{% else %}
+												{{ form.address(class="form-control", placeholder="Address") }}
+											{% endif %}
+                                            </div>
+                                            <div class="form-group">
+                                               {{ form.image.label() }}
+											    {{ form.image(class="form-control-file") }}
+											    {% if form.image.errors %}
+											    	{% for error in form.image.errors%}
+											    		<span class="text-danger">{{error}}</span><br>
+											    	{% endfor %}
+											    {% endif %}
+                                            </div>
+                                            <div class="text-center">
+                                                {{ form.submit(class="btn btn-primary btn-lg btn-block rounded") }}
+                                            </div>
+                                    </form>
+								</div>
+	  						</div>
+						</div>
+  					</div>
+				</div>
+				</div>
+<!--end model-->
+                    </div>
+                    <hr>
+                    <div class="card-text text-sm-center">
+                        <a href="#"><i class="fa fa-facebook pr-1"></i></a>
+                        <a href="#"><i class="fa fa-twitter pr-1"></i></a>
+                        <a href="#"><i class="fa fa-linkedin pr-1"></i></a>
+                        <a href="#"><i class="fa fa-pinterest pr-1"></i></a>
+                    </div>
+                </div>
+            <!--col-6-->
+            <script>  
+                var check = function() {
+                  if (document.getElementById('password').value ==
+                    document.getElementById('confirm_password').value) {
+                    document.getElementById('message').style.color = 'green';
+                    document.getElementById('message').innerHTML = 'correct';
+                  } else {
+                    document.getElementById('message').style.color = 'red';
+                    document.getElementById('message').innerHTML = 'Passwords did not match';
+                  }
+                }
+            </script>   
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Change Password</strong>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{url_for('admins.admin_change_password')}}" method="post" class="">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                <label for="cc-payment" class="control-label mb-1">Current Password</label>
+                                <input type="password" name="current_password" class="form-control" placeholder="Current Password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cc-payment" class="control-label mb-1">New Password</label>
+                                <input type="password" name="new_password" class="form-control" placeholder="New Password"  id="password" onkeyup='check();' pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cc-payment" class="control-label mb-1">Confirm Password</label>
+                                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" id="confirm_password" onkeyup='check();' required>
+                                <span id = "message" style="color:red"> </span>
+                            </div>
+                            <div class="pt-3">
+                               <input class="btn btn-success btn-lg btn-block rounded" type="submit" value="Change Password">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!--end admin profile-->
+
+    <!--Extended page end-->
+
+{%endblock%}

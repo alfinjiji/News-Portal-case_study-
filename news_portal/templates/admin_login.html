@@ -34,8 +34,8 @@
                 <div class="login-logo">
                     <h2 class="text-white">ADMIN LOGIN</h2>
                 </div>
-                <div class="login-form">
-                {% with messages = get_flashed_messages(with_categories=true) %}
+                <div class="login-form rounded pb-5">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
 							{% if messages %}
 								{% for category, message in messages %}
 									{% if category == 'danger'  %}
@@ -44,11 +44,21 @@
 											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 										  		<span aria-hidden="true">&times;</span>
 											</button>
-										</div>
+                                        </div>
+                                    {% elif category == 'success' %}
+                                    <div class="col-sm-12">
+                                        <div class="alert  alert-success alert-dismissible fade show" role="alert">
+                                             {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </div>
 									{% endif %}
 								{% endfor %}
 							{% endif %}
 					{% endwith %}
+            
                     <form action="" method="POST">
                         {{ form.hidden_tag() }}  <!--csrf token-->
                         <div class="form-group">
